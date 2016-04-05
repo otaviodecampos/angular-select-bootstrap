@@ -1,0 +1,49 @@
+{
+  "build": {
+    "clean": true,
+    "task-dir": "tasks",
+    "task": {
+      "concat": true,
+      "css": true
+    },
+    "path": {
+      "build-name": "angular-select-bootstrap",
+      "build-dir": "select/dist",
+      "src-dir": "select/src",
+      "concat-dir": "select/src/module",
+      "concat-output-dir": "select/dist",
+      "css-dir": "select/src/assets/css",
+      "css-output-dir": "select/dist"
+    }
+  },
+  "demo": {
+    "clean": true,
+    "default": true,
+    "after": "build",
+    "task-dir": "tasks",
+    "task": {
+      "concat": true,
+      "vendorCopy": true,
+      "vendorConcat": true,
+      "copy": true
+    },
+    "path": {
+      "build-name": "angular-select-bootstrap-demo",
+      "build-dir": "demo/dist",
+      "src-dir": "demo/src",
+      "concat-dir": "demo/src/module",
+      "concat-output-dir": "demo/dist/assets/js",
+      "vendor-copy-dir": [
+        "select/dist/**/*"
+      ],
+      "vendor-output-copy-dir": "demo/dist/assets/vendor",
+      "vendor-concat-dir": [
+        "bower_components/angular/angular.js",
+        "bower_components/angular-resource/angular-resource.js",
+        "bower_components/angular-mocks/angular-mocks.js",
+        "bower_components/restful-ng-mock/build/restful-ng-mock.js",
+        "bower_components/purl/purl.js"
+      ]
+    }
+  }
+}

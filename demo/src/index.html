@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="angular-select-bootstrap-demo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Angular Select Bootstrap</title>
+    <link href='//fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/select/dist/angular-select-bootstrap.css">
+</head>
+<body ng-controller="DemoCtrl as ctrl">
+    
+    <div class="container">
+       <div class="row">
+          <div class="col-md-12">
+              <form class="form-horizontal">
+                  <div class="form-group">
+                      <label for="inputField" class="col-md-2 control-label">Field</label>
+                      <div class="col-md-10">
+                          <dropdown-selection items="ctrl.items"></dropdown-selection>
+                      </div>
+                  </div>
+              </form>
+          </div>
+        </div>
+    </div>
+
+<script src="/assets/js/vendor.js"></script>
+<script src="/assets/vendor/select/dist/angular-select-bootstrap.js"></script>
+<script src="/assets/js/angular-select-bootstrap-demo.js"></script>
+</body>
+</html>

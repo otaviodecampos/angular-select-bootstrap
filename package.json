@@ -1,0 +1,32 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otaviodecampos/angular-select-bootstrap.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/otaviodecampos/angular-select-bootstrap/issues"
+  },
+  "homepage": "https://github.com/otaviodecampos/angular-select-bootstrap#readme",
+  "dependencies": {
+    "connect": "^3.4.1",
+    "event-stream": "^3.3.2",
+    "gulp": "^3.9.1",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-context": "0.0.20",
+    "gulp-less": "^3.0.5",
+    "gulp-ng-annotate": "^2.0.0",
+    "gulp-ng-json": "0.0.15",
+    "gulp-order": "^1.1.1",
+    "serve-static": "^1.10.2"
+  }
+}

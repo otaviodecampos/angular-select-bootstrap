@@ -1,0 +1,23 @@
+{
+  "name": "workspace",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Otávio de Campos <otaviodecampos@hotmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/otaviodecampos/angular-select-bootstrap",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.3",
+    "angular-resource": "^1.5.3",
+    "restful-ng-mock": "^0.3.0",
+    "angular-mocks": "^1.5.3"
+  }
+}

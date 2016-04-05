@@ -1,0 +1,8 @@
+{
+  "name": "angular-select-bootstrap-demo",
+  "dependencies": [
+    "angular-select-bootstrap",
+    "restfulNgMock",
+    "ngMockE2E"
+  ]
+}

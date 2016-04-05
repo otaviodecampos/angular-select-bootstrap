@@ -1,0 +1,26 @@
+{
+  "name": "restful-ng-mock",
+  "version": "0.3.0",
+  "main": [
+    "./build/restful-ng-mock.min.js"
+  ],
+  "dependencies": {
+    "purl": "2.3.1",
+    "angular": "*"
+  },
+  "devDependencies": {
+    "angular-mocks": "*",
+    "jasmine": "1.2.0",
+    "lodash": "*"
+  },
+  "homepage": "https://github.com/AmericanCouncils/restful-ng-mock",
+  "_release": "0.3.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.3.0",
+    "commit": "2525cbc92b4e90da4fe75cbd8ebfc4e60951f6cc"
+  },
+  "_source": "git://github.com/AmericanCouncils/restful-ng-mock.git",
+  "_target": "^0.3.0",
+  "_originalSource": "restful-ng-mock"
+}

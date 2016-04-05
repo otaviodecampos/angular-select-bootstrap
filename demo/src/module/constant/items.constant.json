@@ -1,0 +1,46 @@
+[
+    {
+        "id": 0,
+        "order": 0,
+        "title": "Option 1",
+        "children": [
+            {
+                "id": 100,
+                "order": 0,
+                "title": "Option 1.1",
+                "children": []
+            },
+            {
+                "id": 200,
+                "order": 1,
+                "title": "Option 1.2",
+                "children": [
+                    {
+                        "id": 1000,
+                        "order": 0,
+                        "title": "Option 1.2.1",
+                        "children": []
+                    },
+                    {
+                        "id": 1001,
+                        "order": 1,
+                        "title": "Option 1.2.2",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 20,
+        "order": 1,
+        "title": "Option 2",
+        "children": []
+    },
+    {
+        "id": 30,
+        "order": 2,
+        "title": "Option 3",
+        "children": []
+    }
+]
