@@ -58,43 +58,80 @@
         }
 
         this.getModel = function() {
-            return this.ngModel.$modelValue;
-        }
-
-        this.selectItem = function(item) {
-            var model = this.getModel();
+            var model = this.ngModel.$modelValue;
             if(model == undefined) {
-                model = [];
-                this.ngModel.$setViewValue(model, true);
+                if(this.options.multiple) {
+                    model = [];   
+                    this.ngModel.$setViewValue(model, true);
+                }
+            }
+            return model;
+        }
+        
+        this.setModelValue = function(value) {
+            var model = this.getModel();
+            this.ngModel.$setViewValue(value, true);
+        }
+
+        this.selectItem = function(item, cascade) {
+            var model = this.getModel();
+
+            if(cascade == undefined) {
+                cascade = true;
             }
 
-            var index = model.indexOf(item[that.options.idProperty]);
-            var exist = index != -1;
-
-            if(!exist) {
-                model.push(item[that.options.idProperty]);
-                addSelectedItem(item);
-                selectAllChildren(item);
-            } else if(exist) {
-                model.splice(index, 1);
-                removeSelectedItem(item);
-                unselectAllChildren(item);
+            if(this.options.multiple) {
+                var index = model.indexOf(item[that.options.idProperty]);
+                var exist = index != -1;
+    
+                if(!exist) {
+                    model.push(item[that.options.idProperty]);
+                    if(cascade) {
+                        selectAllChildren(item);   
+                    }
+                    addSelectedItem(item);
+                } else if(exist) {
+                    model.splice(index, 1);
+                    removeSelectedItem(item);
+                    if(cascade) {
+                        unselectAllChildren(item);   
+                    }
+                }
+            } else {
+                var id = item && item[that.options.idProperty];
+                this.unselectAllItems();
+                if(item) {
+                    addSelectedItem(item);   
+                }
+                if(id != undefined) {
+                    this.setModelValue(id);
+                } else {
+                    this.setModelValue(null);
+                }
             }
         }
+        
         
         this.openItem = function(item) {
             item.$$openned = !item.$$openned;
         }
+        
+        this.unselectItem = function(item) {
+            this.selectItem(this.options.multiple && item || null, false);
+        }
 
         this.unselectAllItems = function() {
-            var model = this.getModel();
-            model.length = 0;
+            if(this.options.multiple) {
+                var model = this.getModel();
+                model.length = 0;    
+            }
+            
             this.selectedItems.length = 0;
         }
 
         this.initItem = function(item, parent) {
             var model = this.getModel();
-            if(model.indexOf(item[that.options.idProperty]) != -1) {
+            if(model && model.indexOf(item[that.options.idProperty]) != -1) {
                 parent.$$openned = true;
                 addSelectedItem(item);
             }

@@ -2,7 +2,7 @@
     <button id="dropdownSelectionButton" class="btn btn-default dropdown-toggle" type="button" ng-click="dropdownSelectionCtrl.toggle()" ng-switch="dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow">
         <span class="label label-default" ng-repeat="item in dropdownSelectionCtrl.selectedItems" ng-switch-when="false">
             {{ item.title }}
-            <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.selectItem(item)"></i>
+            <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.unselectItem(item)"></i>
         </span>
         <span class="label label-default" ng-switch-when="true">
             {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}

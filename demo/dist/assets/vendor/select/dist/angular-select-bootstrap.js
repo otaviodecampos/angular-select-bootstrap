@@ -165,43 +165,80 @@
         }
 
         this.getModel = function() {
-            return this.ngModel.$modelValue;
-        }
-
-        this.selectItem = function(item) {
-            var model = this.getModel();
+            var model = this.ngModel.$modelValue;
             if(model == undefined) {
-                model = [];
-                this.ngModel.$setViewValue(model, true);
+                if(this.options.multiple) {
+                    model = [];   
+                    this.ngModel.$setViewValue(model, true);
+                }
+            }
+            return model;
+        }
+        
+        this.setModelValue = function(value) {
+            var model = this.getModel();
+            this.ngModel.$setViewValue(value, true);
+        }
+
+        this.selectItem = function(item, cascade) {
+            var model = this.getModel();
+
+            if(cascade == undefined) {
+                cascade = true;
             }
 
-            var index = model.indexOf(item[that.options.idProperty]);
-            var exist = index != -1;
-
-            if(!exist) {
-                model.push(item[that.options.idProperty]);
-                addSelectedItem(item);
-                selectAllChildren(item);
-            } else if(exist) {
-                model.splice(index, 1);
-                removeSelectedItem(item);
-                unselectAllChildren(item);
+            if(this.options.multiple) {
+                var index = model.indexOf(item[that.options.idProperty]);
+                var exist = index != -1;
+    
+                if(!exist) {
+                    model.push(item[that.options.idProperty]);
+                    if(cascade) {
+                        selectAllChildren(item);   
+                    }
+                    addSelectedItem(item);
+                } else if(exist) {
+                    model.splice(index, 1);
+                    removeSelectedItem(item);
+                    if(cascade) {
+                        unselectAllChildren(item);   
+                    }
+                }
+            } else {
+                var id = item && item[that.options.idProperty];
+                this.unselectAllItems();
+                if(item) {
+                    addSelectedItem(item);   
+                }
+                if(id != undefined) {
+                    this.setModelValue(id);
+                } else {
+                    this.setModelValue(null);
+                }
             }
         }
+        
         
         this.openItem = function(item) {
             item.$$openned = !item.$$openned;
         }
+        
+        this.unselectItem = function(item) {
+            this.selectItem(this.options.multiple && item || null, false);
+        }
 
         this.unselectAllItems = function() {
-            var model = this.getModel();
-            model.length = 0;
+            if(this.options.multiple) {
+                var model = this.getModel();
+                model.length = 0;    
+            }
+            
             this.selectedItems.length = 0;
         }
 
         this.initItem = function(item, parent) {
             var model = this.getModel();
-            if(model.indexOf(item[that.options.idProperty]) != -1) {
+            if(model && model.indexOf(item[that.options.idProperty]) != -1) {
                 parent.$$openned = true;
                 addSelectedItem(item);
             }
@@ -259,10 +296,9 @@
                 ctrl.ngModelSetter = ctrl.ngModelGetter.assign;
 
                 var defaultOptions = {
-                    multipleSelection: true,
                     maxTerm: 'Selecteds...',
-                    maxShow: 2,
-                    idProperty: 'id'
+                    idProperty: 'id',
+                    multiple: true
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);
@@ -271,5 +307,5 @@
     }
 
 })();
-angular.module("angular-select-bootstrap").run(["$templateCache", function($templateCache) {$templateCache.put("angular-select-bootstrap/dropdownMenu.tpl.html","<ul id=\"dropdownSelectionMenu\" class=\"dropdown-menu\">\n    <li ng-repeat=\"item in items\" ng-init=\"dropdownSelectionCtrl.initItem(item, parent)\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();\" ng-class=\"{group: item.children.length, open: item.$$openned}\">\n        <a href=\"#\">\n            <span class=\"group icon\" ng-click=\"dropdownSelectionCtrl.openItem(item); $event.stopPropagation();\"></span>\n            <input type=\"checkbox\" ng-checked=\"dropdownSelectionCtrl.selectedItems.indexOf(item) != -1\">\n            {{ item.title }}\n        </a>\n        <dropdown-menu class=\"group\" parent=\"item\" items=\"item.children\"></dropdown-menu>\n    </li>\n</ul>");
-$templateCache.put("angular-select-bootstrap/dropdownSelection.tpl.html","<div class=\"dropdown selection\" ng-class=\"{open: dropdownSelectionCtrl.oppened}\" click-outside=\"dropdownSelectionCtrl.close()\" outside-if-not=\"dropdownSelectionButton, dropdownSelectionMenu\">\n    <button id=\"dropdownSelectionButton\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow\">\n        <span class=\"label label-default\" ng-repeat=\"item in dropdownSelectionCtrl.selectedItems\" ng-switch-when=\"false\">\n            {{ item.title }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.selectItem(item)\"></i>\n        </span>\n        <span class=\"label label-default\" ng-switch-when=\"true\">\n            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectAllItems()\"></i>\n        </span>\n        <span class=\"caret\"></span>\n    </button>\n    <dropdown-menu items=\"dropdownSelectionCtrl.items\"></dropdown-menu>\n</div>");}]);
+angular.module("angular-select-bootstrap").run(["$templateCache", function($templateCache) {$templateCache.put("angular-select-bootstrap/dropdownMenu.tpl.html","<ul id=\"dropdownSelectionMenu\" class=\"dropdown-menu\">\n    <li ng-repeat=\"item in items\" ng-init=\"dropdownSelectionCtrl.initItem(item, parent)\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();\" ng-class=\"{group: item.children.length, open: item.$$openned}\">\n        <a href=\"#\">\n            <span class=\"group icon\" ng-click=\"dropdownSelectionCtrl.openItem(item); $event.stopPropagation();\"></span>\n            <input type=\"checkbox\" ng-if=\"dropdownSelectionCtrl.options.multiple\" ng-checked=\"dropdownSelectionCtrl.selectedItems.indexOf(item) != -1\">\n            <span class=\"glyphicon glyphicon-ok check-mark\" ng-if=\"!dropdownSelectionCtrl.options.multiple && dropdownSelectionCtrl.selectedItems.indexOf(item) != -1\"></span>\n            {{ item.title }}\n        </a>\n        <dropdown-menu class=\"group\" parent=\"item\" items=\"item.children\"></dropdown-menu>\n    </li>\n</ul>");
+$templateCache.put("angular-select-bootstrap/dropdownSelection.tpl.html","<div class=\"dropdown selection\" ng-class=\"{open: dropdownSelectionCtrl.oppened}\" click-outside=\"dropdownSelectionCtrl.close()\" outside-if-not=\"dropdownSelectionButton, dropdownSelectionMenu\">\n    <button id=\"dropdownSelectionButton\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow\">\n        <span class=\"label label-default\" ng-repeat=\"item in dropdownSelectionCtrl.selectedItems\" ng-switch-when=\"false\">\n            {{ item.title }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectItem(item)\"></i>\n        </span>\n        <span class=\"label label-default\" ng-switch-when=\"true\">\n            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectAllItems()\"></i>\n        </span>\n        <span class=\"caret\"></span>\n    </button>\n    <dropdown-menu items=\"dropdownSelectionCtrl.items\"></dropdown-menu>\n</div>");}]);

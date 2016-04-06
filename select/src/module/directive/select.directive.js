@@ -24,10 +24,9 @@
                 ctrl.ngModelSetter = ctrl.ngModelGetter.assign;
 
                 var defaultOptions = {
-                    multipleSelection: true,
                     maxTerm: 'Selecteds...',
-                    maxShow: 2,
-                    idProperty: 'id'
+                    idProperty: 'id',
+                    multiple: true
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);
