@@ -27,7 +27,8 @@
                     maxTerm: 'Selecteds...',
                     idProperty: 'id',
                     multiple: true,
-                    editable: false
+                    editable: false,
+                    placeholder: 'Empty title'
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);

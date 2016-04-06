@@ -131,8 +131,13 @@
 
         this.initItem = function(item, parent) {
             var model = this.getModel();
-            if(this.options.multiple && model && model.indexOf(item[that.options.idProperty]) != -1) {
-                parent.$$openned = true;
+            if(model == item || this.options.multiple && model && model.indexOf(item[that.options.idProperty]) != -1) {
+                if(parent) {
+                    parent.$$openned = true;
+                }
+                if(!this.options.multiple) {
+                    this.unselectAllItems();
+                }
                 addSelectedItem(item);
             }
         }
