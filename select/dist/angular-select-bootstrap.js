@@ -1,104 +1,8 @@
-/*global angular*/
-
-(function() {
-    'use strict';
-
-    angular
-        .module('angular-click-outside', [])
-        .directive('clickOutside', ['$document', '$parse', '$timeout', clickOutside]);
-
-    function clickOutside($document, $parse, $timeout) {
-        return {
-            restrict: 'A',
-            link: function($scope, elem, attr) {
-                
-                // postpone linking to next digest to allow for unique id generation
-                $timeout(function() {
-                    var classList = (attr.outsideIfNot !== undefined) ? attr.outsideIfNot.replace(', ', ',').split(',') : [],
-                        fn;
-
-                    // add the elements id so it is not counted in the click listening
-                    if (attr.id !== undefined) {
-                        classList.push(attr.id);
-                    }
-
-                    function eventHandler(e) {
-
-                        // check if our element already hidden and abort if so
-                        if (angular.element(elem).hasClass("ng-hide")) {
-                            return;
-                        }
-
-                        var i = 0,
-                            element;
-
-                        // if there is no click target, no point going on
-                        if (!e || !e.target) {
-                            return;
-                        }
-
-                        // loop through the available elements, looking for classes in the class list that might match and so will eat
-                        for (element = e.target; element; element = element.parentNode) {
-                            var id = element.id,
-                                classNames = element.className,
-                                l = classList.length;
-
-                            // Unwrap SVGAnimatedString classes
-                            if (classNames && classNames.baseVal !== undefined) {
-                                classNames = classNames.baseVal;
-                            }
-
-                            // loop through the elements id's and classnames looking for exceptions
-                            for (i = 0; i < l; i++) {
-                                // check for exact matches on id's or classes, but only if they exist in the first place
-                                if ((id !== undefined && id === classList[i]) || (classNames && classNames === classList[i])) {
-                                    // now let's exit out as it is an element that has been defined as being ignored for clicking outside
-                                    return;
-                                }
-                            }
-                        }
-
-                        // if we have got this far, then we are good to go with processing the command passed in via the click-outside attribute
-                        $scope.$apply(function() {
-                            fn = $parse(attr['clickOutside']);
-                            fn($scope);
-                        });
-                    }
-
-                    // if the devices has a touchscreen, listen for this event
-                    if (_hasTouch()) {
-                        $document.on('touchstart', eventHandler);
-                    }
-
-                    // still listen for the click event even if there is touch to cater for touchscreen laptops
-                    $document.on('click', eventHandler);
-
-                    // when the scope is destroyed, clean up the documents event handlers as we don't want it hanging around
-                    $scope.$on('$destroy', function() {
-                        if (_hasTouch()) {
-                            $document.off('touchstart', eventHandler);
-                        }
-
-                        $document.off('click', eventHandler);
-                    });
-
-                    // private function to attempt to figure out if we are on a touch device
-                    function _hasTouch() {
-                        // works on most browsers, IE10/11 and Surface
-                        return 'ontouchstart' in window || navigator.maxTouchPoints;
-                    };
-                });
-            }
-        };
-    }
-})();
-
 (function() {
     'use strict'
 
     angular.module('angular-select-bootstrap', [
         
-        'angular-click-outside' 
 
     ]);
 
@@ -271,6 +175,33 @@
 })();
 (function () {
 
+    Directive.$inject = ['$document'];
+    angular.module('angular-select-bootstrap')
+        .directive('clickOutside', Directive);
+
+    
+    function Directive($document) {
+        return {
+            link: {
+                pre: function (scope, element, attrs, controller) { },
+                post: function (scope, element, attrs, controller) {
+                    onClick = function (event) {
+                        var isChild = element[0].contains(event.target);
+                        var isSelf = element[0] == event.target;
+                        var isInside = isChild || isSelf;
+                        if (!isInside) {
+                            scope.$apply(attrs.clickOutside)
+                        }
+                    }
+                    $document.on('click', onClick);
+                }
+            }   
+        };
+    }
+
+})();
+(function () {
+
     Directive.$inject = ['$parse'];
     angular.module('angular-select-bootstrap')
         .directive('dropdownSelection', Directive);
@@ -298,14 +229,19 @@
                 var defaultOptions = {
                     maxTerm: 'Selecteds...',
                     idProperty: 'id',
-                    multiple: true
+                    multiple: true,
+                    editable: false
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);
+                
+                if(ctrl.options.editable) {
+                    ctrl.options.multiple = false;
+                }
             }
         };
     }
 
 })();
-angular.module("angular-select-bootstrap").run(["$templateCache", function($templateCache) {$templateCache.put("angular-select-bootstrap/dropdownMenu.tpl.html","<ul id=\"dropdownSelectionMenu\" class=\"dropdown-menu\">\n    <li ng-repeat=\"item in items\" ng-init=\"dropdownSelectionCtrl.initItem(item, parent)\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();\" ng-class=\"{group: item.children.length, open: item.$$openned}\">\n        <a href=\"#\">\n            <span class=\"group icon\" ng-click=\"dropdownSelectionCtrl.openItem(item); $event.stopPropagation();\"></span>\n            <input type=\"checkbox\" ng-if=\"dropdownSelectionCtrl.options.multiple\" ng-checked=\"dropdownSelectionCtrl.selectedItems.indexOf(item) != -1\">\n            <span class=\"glyphicon glyphicon-ok check-mark\" ng-if=\"!dropdownSelectionCtrl.options.multiple && dropdownSelectionCtrl.selectedItems.indexOf(item) != -1\"></span>\n            {{ item.title }}\n        </a>\n        <dropdown-menu class=\"group\" parent=\"item\" items=\"item.children\"></dropdown-menu>\n    </li>\n</ul>");
-$templateCache.put("angular-select-bootstrap/dropdownSelection.tpl.html","<div class=\"dropdown selection\" ng-class=\"{open: dropdownSelectionCtrl.oppened}\" click-outside=\"dropdownSelectionCtrl.close()\" outside-if-not=\"dropdownSelectionButton, dropdownSelectionMenu\">\n    <button id=\"dropdownSelectionButton\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow\">\n        <span class=\"label label-default\" ng-repeat=\"item in dropdownSelectionCtrl.selectedItems\" ng-switch-when=\"false\">\n            {{ item.title }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectItem(item)\"></i>\n        </span>\n        <span class=\"label label-default\" ng-switch-when=\"true\">\n            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectAllItems()\"></i>\n        </span>\n        <span class=\"caret\"></span>\n    </button>\n    <dropdown-menu items=\"dropdownSelectionCtrl.items\"></dropdown-menu>\n</div>");}]);
+angular.module("angular-select-bootstrap").run(["$templateCache", function($templateCache) {$templateCache.put("angular-select-bootstrap/dropdownMenu.tpl.html","<ul id=\"dropdownSelectionMenu\" class=\"dropdown-menu\">\n    <li ng-repeat=\"item in items\" ng-init=\"dropdownSelectionCtrl.initItem(item, parent)\" ng-class=\"{group: item.children.length, open: item.$$openned}\">\n        <a href=\"javascript:angular.noop()\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();\">\n            <span class=\"group icon\" ng-click=\"dropdownSelectionCtrl.openItem(item); $event.stopPropagation();\"></span>\n            <input type=\"checkbox\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();\" readonly ng-if=\"dropdownSelectionCtrl.options.multiple\" ng-checked=\"dropdownSelectionCtrl.selectedItems.indexOf(item) != -1\">\n            <span class=\"glyphicon glyphicon-ok check-mark\" ng-if=\"!dropdownSelectionCtrl.options.multiple && dropdownSelectionCtrl.selectedItems.indexOf(item) != -1\"></span>\n            <span class=\"title\">{{ item.title }}</span>\n        </a>\n        <dropdown-menu class=\"group\" parent=\"item\" items=\"item.children\"></dropdown-menu>\n    </li>\n</ul>");
+$templateCache.put("angular-select-bootstrap/dropdownSelection.tpl.html","<div class=\"dropdown selection\" ng-class=\"{open: dropdownSelectionCtrl.oppened}\" click-outside=\"dropdownSelectionCtrl.close()\">\n    <button id=\"dropdownSelectionButton\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-if=\"dropdownSelectionCtrl.options.multiple\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow\">\n        <span class=\"label label-default\" ng-repeat=\"item in dropdownSelectionCtrl.selectedItems\" ng-switch-when=\"false\">\n            {{ item.title }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectItem(item)\"></i>\n        </span>\n        <span class=\"label label-default\" ng-switch-when=\"true\">\n            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectAllItems()\"></i>\n        </span>\n        <span class=\"caret\"></span>\n    </button>\n    <label id=\"dropdownSelectionButton\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-if=\"!dropdownSelectionCtrl.options.multiple\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems[0] && dropdownSelectionCtrl.options.editable\">\n        <span class=\"title\" ng-switch-when=\"false\">{{ dropdownSelectionCtrl.selectedItems[0].title }}</span>\n        <input class=\"edit\" ng-click=\"$event.stopPropagation()\" ng-switch-when=\"true\" ng-model=\"dropdownSelectionCtrl.selectedItems[0].title\" type=\"text\"/>\n        <span class=\"caret\"></span>\n    </label>\n    <dropdown-menu items=\"dropdownSelectionCtrl.items\"></dropdown-menu>\n</div>");}]);

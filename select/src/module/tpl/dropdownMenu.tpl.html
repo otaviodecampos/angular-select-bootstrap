@@ -1,10 +1,10 @@
 <ul id="dropdownSelectionMenu" class="dropdown-menu">
-    <li ng-repeat="item in items" ng-init="dropdownSelectionCtrl.initItem(item, parent)" ng-click="dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();" ng-class="{group: item.children.length, open: item.$$openned}">
-        <a href="#">
+    <li ng-repeat="item in items" ng-init="dropdownSelectionCtrl.initItem(item, parent)" ng-class="{group: item.children.length, open: item.$$openned}">
+        <a href="javascript:angular.noop()" ng-click="dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();">
             <span class="group icon" ng-click="dropdownSelectionCtrl.openItem(item); $event.stopPropagation();"></span>
-            <input type="checkbox" ng-if="dropdownSelectionCtrl.options.multiple" ng-checked="dropdownSelectionCtrl.selectedItems.indexOf(item) != -1">
+            <input type="checkbox" ng-click="dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();" readonly ng-if="dropdownSelectionCtrl.options.multiple" ng-checked="dropdownSelectionCtrl.selectedItems.indexOf(item) != -1">
             <span class="glyphicon glyphicon-ok check-mark" ng-if="!dropdownSelectionCtrl.options.multiple && dropdownSelectionCtrl.selectedItems.indexOf(item) != -1"></span>
-            {{ item.title }}
+            <span class="title">{{ item.title }}</span>
         </a>
         <dropdown-menu class="group" parent="item" items="item.children"></dropdown-menu>
     </li>

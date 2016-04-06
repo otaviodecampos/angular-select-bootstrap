@@ -26,10 +26,15 @@
                 var defaultOptions = {
                     maxTerm: 'Selecteds...',
                     idProperty: 'id',
-                    multiple: true
+                    multiple: true,
+                    editable: false
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);
+                
+                if(ctrl.options.editable) {
+                    ctrl.options.multiple = false;
+                }
             }
         };
     }

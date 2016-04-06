@@ -52,6 +52,25 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-md-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">Choice with editable label</div>
+                  <div class="panel-body">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-md-4 control-label">Field</label>
+                          <div class="col-md-3">
+                              <dropdown-selection ng-model="ctrl.value4" items="ctrl.items" options="{editable: true}"></dropdown-selection>
+                          </div>
+                      </div>
+                  </form>
+                   <br>
+                      <div class="well">model: {{ ctrl.value4 | json }}</div>
+                  </div>
+                </div>
+          </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
                   <div class="panel-heading">Multiple choice with viewing limit</div>

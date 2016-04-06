@@ -1,5 +1,5 @@
-<div class="dropdown selection" ng-class="{open: dropdownSelectionCtrl.oppened}" click-outside="dropdownSelectionCtrl.close()" outside-if-not="dropdownSelectionButton, dropdownSelectionMenu">
-    <button id="dropdownSelectionButton" class="btn btn-default dropdown-toggle" type="button" ng-click="dropdownSelectionCtrl.toggle()" ng-switch="dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow">
+<div class="dropdown selection" ng-class="{open: dropdownSelectionCtrl.oppened}" click-outside="dropdownSelectionCtrl.close()">
+    <button id="dropdownSelectionButton" class="btn btn-default dropdown-toggle" type="button" ng-if="dropdownSelectionCtrl.options.multiple" ng-click="dropdownSelectionCtrl.toggle()" ng-switch="dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow">
         <span class="label label-default" ng-repeat="item in dropdownSelectionCtrl.selectedItems" ng-switch-when="false">
             {{ item.title }}
             <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.unselectItem(item)"></i>
@@ -10,5 +10,10 @@
         </span>
         <span class="caret"></span>
     </button>
+    <label id="dropdownSelectionButton" class="btn btn-default dropdown-toggle" type="button" ng-if="!dropdownSelectionCtrl.options.multiple" ng-click="dropdownSelectionCtrl.toggle()" ng-switch="dropdownSelectionCtrl.selectedItems[0] && dropdownSelectionCtrl.options.editable">
+        <span class="title" ng-switch-when="false">{{ dropdownSelectionCtrl.selectedItems[0].title }}</span>
+        <input class="edit" ng-click="$event.stopPropagation()" ng-switch-when="true" ng-model="dropdownSelectionCtrl.selectedItems[0].title" type="text"/>
+        <span class="caret"></span>
+    </label>
     <dropdown-menu items="dropdownSelectionCtrl.items"></dropdown-menu>
 </div>

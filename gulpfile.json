@@ -14,9 +14,7 @@
       "concat-output-dir": "select/dist",
       "css-dir": "select/src/assets/css",
       "css-output-dir": "select/dist",
-      "bower-components": [
-        "bower_components/angular-click-outside/clickoutside.directive.js"
-      ]
+      "bower-components": []
     }
   },
   "demo": {

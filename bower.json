@@ -15,7 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.3",
-    "angular-click-outside": "^2.7.0"
+    "angular": "^1.5.3"
   }
 }

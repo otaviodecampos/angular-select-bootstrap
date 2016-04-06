@@ -7,12 +7,30 @@
   outline:none
 }
 
-.dropdown.selection .btn {
+.dropdown.selection .btn.dropdown-toggle {
   border: 1px solid rgba(34,36,38,.15);
   white-space: normal;
   width: 100%;
   text-align: left;
   outline:none;
+}
+
+.dropdown.selection .dropdown-toggle .edit {
+    width: 90%;
+    border: 0;
+    outline: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+.dropdown.selection .dropdown-toggle > span.title {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 15px; 
 }
 
 .dropdown.selection .caret {
@@ -136,6 +154,10 @@
   position: relative;
 }
 
+.dropdown.selection span.group.icon {
+    position: absolute;
+    display: block;
+}
 
 .dropdown.selection .group > a > .group.icon:before {
   font-family: 'Glyphicons Halflings';
@@ -167,6 +189,13 @@
   padding-bottom: 8px;
 }
 
+.dropdown.selection .dropdown-menu > li > a .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+  display: block;
+}
+
 .dropdown.selection .dropdown-menu > li > a:hover:after {
   display: block;
   background-color: #f5f5f5;
@@ -185,7 +214,8 @@
 
 .dropdown.selection input[type=checkbox] {
   vertical-align: middle;
-  margin-top: -1px;
+  float: left;
+  margin-right: 3px;
 }
 
 .dropdown.selection span.check-mark {
