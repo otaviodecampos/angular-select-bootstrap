@@ -81,8 +81,12 @@
                 unselectAllChildren(item);
             }
         }
+        
+        this.openItem = function(item) {
+            item.$$openned = !item.$$openned;
+        }
 
-        this.unselectAll = function() {
+        this.unselectAllItems = function() {
             var model = this.getModel();
             model.length = 0;
             this.selectedItems.length = 0;

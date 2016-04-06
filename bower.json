@@ -16,9 +16,6 @@
   ],
   "dependencies": {
     "angular": "^1.5.3",
-    "angular-resource": "^1.5.3",
-    "restful-ng-mock": "^0.3.0",
-    "angular-mocks": "^1.5.3",
     "angular-click-outside": "^2.7.0"
   }
 }
