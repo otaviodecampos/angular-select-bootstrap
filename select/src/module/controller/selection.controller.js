@@ -131,7 +131,7 @@
 
         this.initItem = function(item, parent) {
             var model = this.getModel();
-            if(model && model.indexOf(item[that.options.idProperty]) != -1) {
+            if(this.options.multiple && model && model.indexOf(item[that.options.idProperty]) != -1) {
                 parent.$$openned = true;
                 addSelectedItem(item);
             }
