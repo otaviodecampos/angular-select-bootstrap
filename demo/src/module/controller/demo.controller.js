@@ -6,6 +6,8 @@
     function Controller(ITEMS) {
         
         this.items = ITEMS;
+
+        this.value = [20];
         
     }
 

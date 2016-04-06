@@ -1,0 +1,10 @@
+<ul id="dropdownSelectionMenu" class="dropdown-menu">
+    <li ng-repeat="item in items" ng-init="dropdownSelectionCtrl.initItem(item)" ng-click="dropdownSelectionCtrl.selectItem(item); $event.stopPropagation();" ng-class="{group: item.children.length, open: item.$$openned}">
+        <a href="#">
+            <span class="group icon" ng-click="item.$$openned = !item.$$openned; $event.stopPropagation();"></span>
+            <input type="checkbox" ng-checked="item.$$selected">
+            {{ item.title }}
+        </a>
+        <dropdown-menu class="group" items="item.children"></dropdown-menu>
+    </li>
+</ul>

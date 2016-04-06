@@ -1,6 +1,14 @@
-<div class="dropdown selection">
-    <button class="btn btn-default dropdown-toggle" type="button">
-    <ul class="dropdown-menu">
-        <li>oi</li>
-    </ul>
+<div class="dropdown selection" ng-class="{open: dropdownSelectionCtrl.oppened}" click-outside="dropdownSelectionCtrl.close()" outside-if-not="dropdownSelectionButton, dropdownSelectionMenu">
+    <button id="dropdownSelectionButton" class="btn btn-default dropdown-toggle" type="button" ng-click="dropdownSelectionCtrl.toggle()" ng-switch="dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow">
+        <span class="label label-default" ng-repeat="item in dropdownSelectionCtrl.selectedItems" ng-switch-when="false">
+            {{ item.title }}
+            <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.selectItem(item)"></i>
+        </span>
+        <span class="label label-default" ng-switch-when="true">
+            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.selectedTerm }}
+            <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.unselectAll()"></i>
+        </span>
+        <span class="caret"></span>
+    </button>
+    <dropdown-menu items="dropdownSelectionCtrl.items"></dropdown-menu>
 </div>

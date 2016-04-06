@@ -1,4 +1,6 @@
 {
   "name": "angular-select-bootstrap",
-  "dependencies": []
+  "dependencies": [
+    "angular-click-outside"
+  ]
 }

@@ -1,6 +1,188 @@
-/*******************************
-   Angular Select Bootstrap
-*******************************/
+.dropdown.selection .btn {
+  min-height: 36px;
+}
 
-@import "components/dropdown";
-@import "components/menu";
+.dropdown.selection a {
+  border:none;
+  outline:none
+}
+
+.dropdown.selection .btn {
+  border: 1px solid rgba(34,36,38,.15);
+  white-space: normal;
+  width: 100%;
+  text-align: left;
+  outline:none;
+}
+
+.dropdown.selection .caret {
+  margin: 8px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.dropdown.selection .label {
+  display: inline-block !important;
+  vertical-align: top;
+  white-space: normal;
+  padding: .35714286em .71428571em;
+  margin: .21428571em .28571429rem .21428571em 0;
+  box-shadow: 0 0 0 1px rgba(34,36,38,.15) inset;
+  background-color: #e8e8e8;
+  background-image: none;
+  padding: .5833em .833em;
+  color: rgba(0,0,0,.6);
+  text-transform: none;
+  font-weight: 700;
+  border: 0 solid transparent;
+  border-radius: .28571429rem;
+  -webkit-transition: background .1s ease;
+  transition: background .1s ease;
+  font-size: 12px;
+}
+
+.dropdown.selection .label .remove {
+  cursor: pointer;
+  margin-right: 0;
+  margin-left: .5em;
+  font-size: 12px;
+  opacity: .5;
+  -webkit-transition: background .1s ease;
+  transition: background .1s ease;
+  vertical-align: baseline;
+}
+
+.dropdown.selection .label .remove:hover {
+  opacity: 1;
+}
+
+.dropdown.selection .search {
+  width: 100%;
+}
+
+.dropdown.selection .filter {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+  padding-right: 10px;
+  vertical-align: bottom;
+  height: 25px;
+  cursor: text;
+  min-width: 20px;
+}
+
+.dropdown.selection .filter .value {
+  outline: none;
+  min-width: 40px;
+  height: 20px;
+  display: block;
+}
+
+.dropdown.selection.open .btn,
+.dropdown.selection.open .dropdown-menu,
+.dropdown.selection .btn-default.active,
+.dropdown.selection .btn-default:active,
+.dropdown.selection.open >.dropdown-toggle.btn-default {
+  background: none;
+  border-color: #96c8da;
+}
+
+.dropdown.selection.open .btn {
+  border-bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.dropdown.selection .dropdown-menu {
+  width: 100%;
+}
+
+.dropdown.selection.open .dropdown-menu {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 0;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.dropdown.selection:hover .btn {
+  background: none;
+  border-color: rgba(34,36,38,.35);
+}
+
+.dropdown .search {
+  border: 0;
+  background: none;
+  outline: none;
+}
+
+.dropdown.selection .group.dropdown-menu {
+  position: relative;
+  border: 0;
+  box-shadow: none;
+  padding-left:6px;
+  display: none;
+  padding-bottom: 0;
+}
+
+.dropdown.selection .group.open > .group.dropdown-menu {
+  display: block;
+}
+
+.dropdown.selection .group {
+  position: relative;
+}
+
+
+.dropdown.selection .group > a > .group.icon:before {
+  font-family: 'Glyphicons Halflings';
+  content: "\e250";
+  position: relative;
+  font-size: 8px;
+  margin-left: -12px;
+  display: inline-block;
+}
+
+.dropdown.selection .group.open > a > .group.icon:before {
+  content: "\e252";
+}
+
+.dropdown.selection > .dropdown-menu {
+  overflow: hidden;
+}
+
+.dropdown.selection .dropdown-menu > li > a:focus,
+.dropdown.selection .dropdown-menu > li > a:hover {
+  color: #262626;
+  text-decoration: none;
+  background: none;
+}
+
+.dropdown.selection .dropdown-menu > li > a {
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.dropdown.selection .dropdown-menu > li > a:hover:after {
+  display: block;
+  background-color: #f5f5f5;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.dropdown.selection.open > .dropdown-menu {
+  display: block;
+}
+
+.dropdown.selection input[type=checkbox] {
+  vertical-align: middle;
+  margin-top: -1px;
+}

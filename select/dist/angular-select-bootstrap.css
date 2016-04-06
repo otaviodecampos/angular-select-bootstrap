@@ -1,9 +1,3 @@
-/*******************************
-   Angular Select Bootstrap
-*******************************/
-/*******************************
-            Dropdown
-*******************************/
 .dropdown.selection .btn {
   min-height: 36px;
 }
@@ -17,11 +11,6 @@
   width: 100%;
   text-align: left;
   outline: none;
-}
-.dropdown.selection.open .btn {
-  border-bottom: 0;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
 }
 .dropdown.selection .caret {
   margin: 8px;
@@ -81,14 +70,6 @@
   height: 20px;
   display: block;
 }
-.dropdown .search {
-  border: 0;
-  background: none;
-  outline: none;
-}
-/*******************************
-             Menu
-*******************************/
 .dropdown.selection.open .btn,
 .dropdown.selection.open .dropdown-menu,
 .dropdown.selection .btn-default.active,
@@ -96,6 +77,11 @@
 .dropdown.selection.open > .dropdown-toggle.btn-default {
   background: none;
   border-color: #96c8da;
+}
+.dropdown.selection.open .btn {
+  border-bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 .dropdown.selection .dropdown-menu {
   width: 100%;
@@ -110,6 +96,11 @@
 .dropdown.selection:hover .btn {
   background: none;
   border-color: rgba(34, 36, 38, 0.35);
+}
+.dropdown .search {
+  border: 0;
+  background: none;
+  outline: none;
 }
 .dropdown.selection .group.dropdown-menu {
   position: relative;
@@ -160,4 +151,11 @@
   bottom: 0;
   right: 0;
   z-index: -1;
+}
+.dropdown.selection.open > .dropdown-menu {
+  display: block;
+}
+.dropdown.selection input[type=checkbox] {
+  vertical-align: middle;
+  margin-top: -1px;
 }

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/assets/vendor/select/dist/angular-select-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/angular-select-bootstrap-demo.css">
 </head>
 <body ng-controller="DemoCtrl as ctrl">
     
@@ -16,13 +17,18 @@
           <div class="col-md-12">
               <form class="form-horizontal">
                   <div class="form-group">
-                      <label for="inputField" class="col-md-2 control-label">Field</label>
-                      <div class="col-md-10">
-                          <dropdown-selection items="ctrl.items"></dropdown-selection>
+                      <label class="col-md-4 control-label">Field</label>
+                      <div class="col-md-3">
+                          <dropdown-selection ng-model="ctrl.value" items="ctrl.items"></dropdown-selection>
                       </div>
                   </div>
               </form>
           </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                value: {{ ctrl.value }}
+            </div>
         </div>
     </div>
 

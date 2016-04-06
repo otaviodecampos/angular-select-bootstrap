@@ -11,6 +11,9 @@ module.exports = function () {
     var that = this;
     var tplSrc = this.input(this.concatDir, ['**/*.tpl.html']);
     var jsSrc = this.input(this.concatDir, ['**/*.json', '**/*.js']);
+    var vendorSrc = this.bowerComponents || [];
+
+    var vendor = gulp.src(vendorSrc);
 
     var tpl = gulp.src(tplSrc)
         .pipe(templateCache({
@@ -25,8 +28,9 @@ module.exports = function () {
         .pipe(ngjson.constant())
         .pipe(ngjson.state());
 
-    return es.merge(js, tpl)
+    return es.merge(js, tpl, vendor)
         .pipe(order([
+            "**/clickoutside.directive.js",
             "**/*.module.json",
             "**/*.module.js",
             "**/*.constant.json",
