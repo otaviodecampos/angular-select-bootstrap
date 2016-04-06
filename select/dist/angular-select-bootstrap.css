@@ -11,6 +11,7 @@
   width: 100%;
   text-align: left;
   outline: none;
+  background: #fff;
 }
 .dropdown.selection .dropdown-toggle .edit {
   width: 90%;
