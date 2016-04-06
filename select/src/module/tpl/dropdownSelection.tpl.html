@@ -5,7 +5,7 @@
             <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.selectItem(item)"></i>
         </span>
         <span class="label label-default" ng-switch-when="true">
-            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.selectedTerm }}
+            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}
             <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.unselectAll()"></i>
         </span>
         <span class="caret"></span>

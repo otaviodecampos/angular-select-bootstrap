@@ -13,13 +13,19 @@
 <body ng-controller="DemoCtrl as ctrl">
     
     <div class="container">
-       <div class="row">
+        <div class="row">
+            <div class="col-md-12">
+                value: {{ ctrl.value }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
           <div class="col-md-12">
               <form class="form-horizontal">
                   <div class="form-group">
                       <label class="col-md-4 control-label">Field</label>
                       <div class="col-md-3">
-                          <dropdown-selection ng-model="ctrl.value" items="ctrl.items"></dropdown-selection>
+                          <dropdown-selection ng-model="ctrl.value" items="ctrl.items" options="{maxTerm: 'Selecionados...', maxShow: 2}"></dropdown-selection>
                       </div>
                   </div>
               </form>
@@ -27,7 +33,20 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                value: {{ ctrl.value }}
+                value: {{ ctrl.value2 }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Field</label>
+                        <div class="col-md-3">
+                            <dropdown-selection ng-model="ctrl.value2" items="ctrl.items2" options="{maxTerm: 'Selecionados...', maxShow: 2, 'idProperty': 'easyId'}"></dropdown-selection>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

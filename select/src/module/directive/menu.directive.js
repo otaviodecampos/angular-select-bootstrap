@@ -10,6 +10,7 @@
             templateUrl: 'angular-select-bootstrap/dropdownMenu.tpl.html',
             replace: true,
             scope: {
+                parent: "=",
                 items: "="
             },
             link: function(scope, element, attr, dropdownSelection) {

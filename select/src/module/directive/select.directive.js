@@ -23,15 +23,14 @@
                 ctrl.ngModelGetter = $parse(ngModelAttr);
                 ctrl.ngModelSetter = ctrl.ngModelGetter.assign;
 
-                if(!options) {
-                    options = {
-                        multipleSelection: true,
-                        selectedTerm: 'Selecteds...',
-                        maxShow: 2
-                    }
+                var defaultOptions = {
+                    multipleSelection: true,
+                    maxTerm: 'Selecteds...',
+                    maxShow: 2,
+                    idProperty: 'id'
                 }
 
-                ctrl.options = options;
+                ctrl.options = angular.extend(defaultOptions, options);
             }
         };
     }
