@@ -8,7 +8,7 @@
         return {
             link: function (scope, element, attrs, controller) {
                     
-                var onClick = function (event) {
+                /*var onClick = function (event) {
                     var isChild = element[0].contains(event.target);
                     var isSelf = element[0] == event.target;
                     var isInside = isChild || isSelf;
@@ -17,7 +17,7 @@
                     }
                 }
                 
-                $document.bind('click', onClick);
+                $document.bind('click', onClick);*/
                 
                 /*scope.$watch(attrs.clickOutsideActive, function(newValue, oldValue) {
                     if (newValue !== oldValue && newValue == true) {

@@ -10,12 +10,12 @@
 
 (function () {
 
-    Controller.$inject = ['$scope'];
+    Controller.$inject = ['$scope', '$document', '$element'];
     angular.module('angular-select-bootstrap')
         .controller('DropdownSelectionCtrl', Controller);
 
     /* @ngInject */
-    function Controller($scope) {
+    function Controller($scope, $document, $element) {
 
         var that = this;
         this.oppened = false;
@@ -58,13 +58,28 @@
             });
         }
 
+        var onClick;
         this.toggle = function() {
             this.oppened = !this.oppened;
+            if(this.oppened) {
+                onClick = function (event) {
+                    var isChild = $element[0].contains(event.target);
+                    var isSelf = $element[0] == event.target;
+                    var isInside = isChild || isSelf;
+                    if (!isInside) {
+                        that.close();
+                        $scope.$apply();
+                    }
+                }
+                
+                $document.bind('click', onClick);
+            }
         }
 
         this.close = function() {
             if(this.oppened) {
                 this.oppened = false
+                $document.unbind('click', onClick);
             }
         }
 
@@ -123,7 +138,6 @@
             }
         }
         
-        
         this.openItem = function(item) {
             item.$$openned = !item.$$openned;
         }
@@ -170,7 +184,7 @@
         }, function(newValue) {
             if(!newValue) {
                 that.unselectAllItems();
-            } else {
+            } else if(!angular.isArray(newValue)) {
                 initItem(newValue);
             }
         });
@@ -221,40 +235,6 @@
     }
 
 })();
-(function () {
-
-    Directive.$inject = ['$document', '$parse'];
-    angular.module('angular-select-bootstrap')
-        .directive('clickOutside', Directive);
-
-    
-    function Directive($document, $parse) {
-        return {
-            link: function (scope, element, attrs, controller) {
-                    
-                var onClick = function (event) {
-                    var isChild = element[0].contains(event.target);
-                    var isSelf = element[0] == event.target;
-                    var isInside = isChild || isSelf;
-                    if (!isInside) {
-                        scope.$apply(attrs.clickOutside)
-                    }
-                }
-                
-                $document.bind('click', onClick);
-                
-                /*scope.$watch(attrs.clickOutsideActive, function(newValue, oldValue) {
-                    if (newValue !== oldValue && newValue == true) {
-                        $document.bind('click', onClick);
-                    } else if (newValue !== oldValue && newValue == false) {
-                        $document.unbind('click', onClick);
-                    }
-                });*/
-            }
-        };
-    }
-
-})();;
 (function () {
 
     Directive.$inject = ['$parse'];

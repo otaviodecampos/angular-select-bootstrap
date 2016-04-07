@@ -4,7 +4,7 @@
         .controller('DropdownSelectionCtrl', Controller);
 
     /* @ngInject */
-    function Controller($scope) {
+    function Controller($scope, $document, $element) {
 
         var that = this;
         this.oppened = false;
@@ -47,13 +47,28 @@
             });
         }
 
+        var onClick;
         this.toggle = function() {
             this.oppened = !this.oppened;
+            if(this.oppened) {
+                onClick = function (event) {
+                    var isChild = $element[0].contains(event.target);
+                    var isSelf = $element[0] == event.target;
+                    var isInside = isChild || isSelf;
+                    if (!isInside) {
+                        that.close();
+                        $scope.$apply();
+                    }
+                }
+                
+                $document.bind('click', onClick);
+            }
         }
 
         this.close = function() {
             if(this.oppened) {
                 this.oppened = false
+                $document.unbind('click', onClick);
             }
         }
 
@@ -112,7 +127,6 @@
             }
         }
         
-        
         this.openItem = function(item) {
             item.$$openned = !item.$$openned;
         }
@@ -159,7 +173,7 @@
         }, function(newValue) {
             if(!newValue) {
                 that.unselectAllItems();
-            } else {
+            } else if(!angular.isArray(newValue)) {
                 initItem(newValue);
             }
         });
