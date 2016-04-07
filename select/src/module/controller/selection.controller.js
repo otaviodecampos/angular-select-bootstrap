@@ -139,6 +139,14 @@
             }
         }
 
+        $scope.$watch(function () {
+            return that.ngModel.$modelValue;
+        }, function(newValue) {
+            if(!newValue) {
+                that.unselectAllItems();
+            }
+        });
+
     }
 
 })();
