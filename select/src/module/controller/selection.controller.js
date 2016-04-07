@@ -158,6 +158,33 @@
             }
         });
 
+        $scope.$watch(function () {
+            return that.ngModel.$modelValue;
+        }, function(newValue) {
+            if(!newValue) {
+                that.unselectAllItems();
+            }
+        });
+
+        $scope.$watch('dropdownSelectionCtrl.items', function(newValue) {
+            if(newValue) {
+                that.initItems(newValue);
+            }
+        });
+
+        this.initItems = function(items) {
+            angular.forEach(items, function(item) {
+                that.initModelItem(item);
+            });
+        }
+
+        this.initModelItem = function(item, parent) {
+            that.initItem(item);
+            angular.forEach(item.children, function(children) {
+                that.initModelItem(children, item);
+            });
+        }
+
     }
 
 })();
