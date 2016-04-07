@@ -170,6 +170,8 @@
         }, function(newValue) {
             if(!newValue) {
                 that.unselectAllItems();
+            } else {
+                initItem(newValue);
             }
         });
 

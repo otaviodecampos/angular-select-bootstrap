@@ -65,7 +65,70 @@
                       </div>
                   </form>
                    <br>
-                      <div class="well">model: {{ ctrl.value3 | json }}</div>
+                      <div class="well">model: {{ ctrl.value6 | json }}</div>
+                  </div>
+                </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">Clear selected value</div>
+                  <div class="panel-body">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-md-4 control-label">Field</label>
+                          <div class="col-md-3">
+                              <dropdown-selection ng-model="ctrl.value7" items="ctrl.items" options="{multiple: false, selectClose: true}"></dropdown-selection>
+                              <br>
+                              <button class="btn" ng-click="ctrl.value7 = null">Clear</button>
+                          </div>
+                      </div>
+                  </form>
+                   <br>
+                      <div class="well">model: {{ ctrl.value7 | json }}</div>
+                  </div>
+                </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">Add new item and select</div>
+                  <div class="panel-body">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-md-4 control-label">Field</label>
+                          <div class="col-md-3">
+                              <dropdown-selection ng-model="ctrl.value8" items="ctrl.items" options="{multiple: false, selectClose: true}"></dropdown-selection>
+                              <br>
+                              <button class="btn" ng-click="ctrl.addNewItemAndSelect()">Add</button>
+                          </div>
+                      </div>
+                  </form>
+                   <br>
+                      <div class="well">model: {{ ctrl.value8 | json }}</div>
+                  </div>
+                </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">Remove selected item</div>
+                  <div class="panel-body">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-md-4 control-label">Field</label>
+                          <div class="col-md-3">
+                              <dropdown-selection ng-model="ctrl.value9" items="ctrl.items" options="{multiple: false, selectClose: true}"></dropdown-selection>
+                              <br>
+                              <button class="btn" ng-disabled="!ctrl.value9" ng-click="ctrl.removeSelected()">Remove</button>
+                          </div>
+                      </div>
+                  </form>
+                   <br>
+                      <div class="well">model: {{ ctrl.value9 | json }}</div>
                   </div>
                 </div>
           </div>
@@ -103,7 +166,7 @@
                         </div>
                     </form>
                     <br>
-                      <div class="well">model: {{ ctrl.value2 | json }}</div>
+                      <div class="well">model: {{ ctrl.value5 | json }}</div>
                   </div>
                 </div>
             </div>
