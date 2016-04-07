@@ -35,10 +35,10 @@
         var selectAllChildren = function(item) {
             var model = that.getModel();
             angular.forEach(item.children, function(item) {
-                var index = model.indexOf(item[that.options.idProperty]);
+                var index = model.indexOf(item);
                 var exist = index != -1;
                 if(!exist) {
-                    model.push(item[that.options.idProperty]);
+                    model.push(item);
                     addSelectedItem(item);
                     selectAllChildren(item);
                 }
@@ -48,7 +48,7 @@
         var unselectAllChildren = function(item) {
             var model = that.getModel();
             angular.forEach(item.children, function(item) {
-                var index = model.indexOf(item[that.options.idProperty]);
+                var index = model.indexOf(item);
                 var exist = index != -1;
                 if(exist) {
                     model.splice(index, 1);
@@ -92,11 +92,11 @@
             }
 
             if(this.options.multiple) {
-                var index = model.indexOf(item[that.options.idProperty]);
+                var index = model.indexOf(item);
                 var exist = index != -1;
     
                 if(!exist) {
-                    model.push(item[that.options.idProperty]);
+                    model.push(item);
                     if(cascade) {
                         selectAllChildren(item);   
                     }
@@ -109,13 +109,10 @@
                     }
                 }
             } else {
-                var id = item && item[that.options.idProperty];
                 this.unselectAllItems();
                 if(item) {
-                    addSelectedItem(item);   
-                }
-                if(id != undefined) {
-                    this.setModelValue(id);
+                    addSelectedItem(item);
+                    this.setModelValue(item);
                 } else {
                     this.setModelValue(null);
                 }
@@ -142,7 +139,7 @@
 
         this.initItem = function(item, parent) {
             var model = this.getModel();
-            if(model == item || this.options.multiple && model && model.indexOf(item[that.options.idProperty]) != -1) {
+            if(model == item || this.options.multiple && model && model.indexOf(item) != -1) {
                 if(parent) {
                     parent.$$openned = true;
                 }
