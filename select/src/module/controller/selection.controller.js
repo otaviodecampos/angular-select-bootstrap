@@ -127,8 +127,19 @@
         }
 
         this.initItem = function(item, parent) {
-            var model = this.getModel();
-            if(model == item || this.options.multiple && model && model.indexOf(item) != -1) {
+            var model = this.getModel()
+                , selected = false;
+
+            if(this.options.multiple && model) {
+                angular.forEach(model, function(modelItem) {
+                    if(modelItem[that.options.idProperty] == item[that.options.idProperty]) {
+                        selected = true;
+                        return false;
+                    }
+                });
+            }
+
+            if(model == item || selected) {
                 if(parent) {
                     parent.$$openned = true;
                 }

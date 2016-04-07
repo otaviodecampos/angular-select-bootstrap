@@ -15,5 +15,5 @@
         <input class="edit" placeholder="{{ dropdownSelectionCtrl.options.placeholder }}" ng-click="$event.stopPropagation()" ng-switch-when="true" ng-model="dropdownSelectionCtrl.selectedItems[0].title" type="text"/>
         <span class="caret"></span>
     </label>
-    <dropdown-menu items="dropdownSelectionCtrl.items"></dropdown-menu>
+    <dropdown-menu ng-if="dropdownSelectionCtrl.oppened" items="dropdownSelectionCtrl.items"></dropdown-menu>
 </div>
