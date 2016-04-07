@@ -28,7 +28,8 @@
                     idProperty: 'id',
                     multiple: true,
                     editable: false,
-                    placeholder: 'Empty title'
+                    placeholder: 'Empty title',
+                    selectClose: false
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);
@@ -36,6 +37,18 @@
                 if(ctrl.options.editable) {
                     ctrl.options.multiple = false;
                 }
+                
+                if(ctrl.options.multiple) {
+                    ctrl.mode = 'multiple';
+                } else {
+                    if(ctrl.options.editable) {
+                        ctrl.mode = 'unique-editable'   
+                    } else {
+                        ctrl.mode = 'unique'
+                    }
+                }
+                
+                
             }
         };
     }

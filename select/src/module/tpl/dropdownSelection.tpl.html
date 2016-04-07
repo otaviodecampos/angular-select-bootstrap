@@ -1,19 +1,28 @@
-<div class="dropdown selection" ng-class="{open: dropdownSelectionCtrl.oppened}" click-outside="dropdownSelectionCtrl.close()">
-    <button class="btn btn-default dropdown-toggle" type="button" ng-if="dropdownSelectionCtrl.options.multiple" ng-click="dropdownSelectionCtrl.toggle()" ng-switch="dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow">
-        <span class="label label-default" ng-repeat="item in dropdownSelectionCtrl.selectedItems" ng-switch-when="false">
-            {{ item.title }}
-            <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.unselectItem(item)"></i>
-        </span>
+<div class="dropdown selection" ng-class="{open: dropdownSelectionCtrl.oppened}" click-outside="dropdownSelectionCtrl.close()" click-outside-active="dropdownSelectionCtrl.oppened" ng-switch="dropdownSelectionCtrl.mode">
+    <button ng-switch-when="multiple" class="btn btn-default dropdown-toggle" type="button" ng-click="dropdownSelectionCtrl.toggle()" ng-switch="dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow">
+        
         <span class="label label-default" ng-switch-when="true">
             {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}
             <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.unselectAllItems()"></i>
         </span>
+        
+        <span class="label label-default" ng-repeat="item in dropdownSelectionCtrl.selectedItems" ng-switch-when="false">
+            {{ ::item.title }}
+            <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.unselectItem(item)"></i>
+        </span>
+        
         <span class="caret"></span>
     </button>
-    <label class="btn btn-default dropdown-toggle" type="button" ng-if="!dropdownSelectionCtrl.options.multiple" ng-click="dropdownSelectionCtrl.toggle()" ng-switch="dropdownSelectionCtrl.selectedItems[0] && dropdownSelectionCtrl.options.editable">
-        <span class="title" ng-switch-when="false">{{ dropdownSelectionCtrl.selectedItems[0].title }}</span>
-        <input class="edit" placeholder="{{ dropdownSelectionCtrl.options.placeholder }}" ng-click="$event.stopPropagation()" ng-switch-when="true" ng-model="dropdownSelectionCtrl.selectedItems[0].title" type="text"/>
+    
+    <label ng-switch-when="unique" class="btn btn-default dropdown-toggle" type="button" ng-click="dropdownSelectionCtrl.toggle()">
+        <span class="title">{{ dropdownSelectionCtrl.selectedItems[0].title }}</span>
         <span class="caret"></span>
     </label>
+    
+    <label ng-switch-when="unique-editable" class="btn btn-default dropdown-toggle" type="button" ng-click="dropdownSelectionCtrl.toggle()">
+        <input class="edit" ng-if="dropdownSelectionCtrl.selectedItems[0]" placeholder="{{ dropdownSelectionCtrl.options.placeholder }}" ng-click="$event.stopPropagation()" ng-model="dropdownSelectionCtrl.selectedItems[0].title" type="text"/>
+        <span class="caret"></span>
+    </label>
+    
     <dropdown-menu ng-if="dropdownSelectionCtrl.oppened" items="dropdownSelectionCtrl.items"></dropdown-menu>
 </div>

@@ -106,6 +106,10 @@
                     this.setModelValue(null);
                 }
             }
+            
+            if(this.options.selectClose) {
+                this.close();
+            }
         }
         
         
@@ -126,11 +130,11 @@
             this.selectedItems.length = 0;
         }
 
-        this.initItem = function(item, parent) {
-            var model = this.getModel()
+        var initItem = function(item, parent) {
+            var model = that.getModel()
                 , selected = false;
 
-            if(this.options.multiple && model) {
+            if(that.options.multiple && model) {
                 angular.forEach(model, function(modelItem) {
                     if(modelItem[that.options.idProperty] == item[that.options.idProperty]) {
                         selected = true;
@@ -143,8 +147,8 @@
                 if(parent) {
                     parent.$$openned = true;
                 }
-                if(!this.options.multiple) {
-                    this.unselectAllItems();
+                if(!that.options.multiple) {
+                    that.unselectAllItems();
                 }
                 addSelectedItem(item);
             }
@@ -158,32 +162,26 @@
             }
         });
 
-        $scope.$watch(function () {
-            return that.ngModel.$modelValue;
-        }, function(newValue) {
-            if(!newValue) {
-                that.unselectAllItems();
-            }
-        });
-
-        $scope.$watch('dropdownSelectionCtrl.items', function(newValue) {
-            if(newValue) {
-                that.initItems(newValue);
-            }
-        });
-
-        this.initItems = function(items) {
-            angular.forEach(items, function(item) {
-                that.initModelItem(item);
-            });
-        }
-
-        this.initModelItem = function(item, parent) {
-            that.initItem(item);
+        
+        var initModelItem = function(item, parent) {
+            initItem(item);
             angular.forEach(item.children, function(children) {
-                that.initModelItem(children, item);
+                initModelItem(children, item);
             });
         }
+        
+        var initItems = function(items) {
+            angular.forEach(items, function(item) {
+                initModelItem(item);
+            });
+        }
+        
+        var init = $scope.$watch('dropdownSelectionCtrl.items', function(newValue) {
+            if(newValue) {
+                initItems(newValue);
+                init();
+            }
+        });
 
     }
 
