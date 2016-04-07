@@ -11,7 +11,6 @@
   width: 100%;
   text-align: left;
   outline: none;
-  background: #fff;
 }
 .dropdown.selection .dropdown-toggle .edit {
   width: 90%;
@@ -20,8 +19,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;
-  margin-top: -5px;
-  margin-bottom: -5px;
 }
 .dropdown.selection .dropdown-toggle > span.title {
   width: 100%;
@@ -168,7 +165,7 @@
 .dropdown.selection .dropdown-menu > li > a .title {
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 15px;
+  padding-right: 10px;
   display: block;
 }
 .dropdown.selection .dropdown-menu > li > a:hover:after {
