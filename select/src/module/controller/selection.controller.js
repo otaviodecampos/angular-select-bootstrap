@@ -137,9 +137,14 @@
                 this.close();
             }
         }
-        
-        this.openItem = function(item) {
-            item.$$openned = !item.$$openned;
+
+        this.openItem = function(item, openParent) {
+            if(item) {
+                item.$$openned = !item.$$openned;
+                if(openParent) {
+                    this.openItem(item.$$parent, true);
+                }
+            }
         }
         
         this.unselectItem = function(item) {
@@ -156,6 +161,9 @@
         }
 
         var initItem = function(item, parent) {
+
+            item.$$parent = parent;
+
             var model = that.getModel()
                 , selected = false;
 
@@ -169,9 +177,7 @@
             }
 
             if(model == item || selected) {
-                if(parent) {
-                    parent.$$openned = true;
-                }
+                that.openItem(parent, true);
                 if(!that.options.multiple) {
                     that.unselectAllItems();
                 }
