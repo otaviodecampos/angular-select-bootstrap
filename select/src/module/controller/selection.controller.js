@@ -47,6 +47,17 @@
             });
         }
 
+        this.contains = function(item) {
+            var contains = false;
+            angular.forEach(this.selectedItems, function(selectedItem) {
+                if(selectedItem[that.options.idProperty] == item[that.options.idProperty]) {
+                    contains = true;
+                    return false;
+                }
+            });
+            return contains;
+        }
+
         var onClick;
         this.toggle = function() {
             this.oppened = !this.oppened;
