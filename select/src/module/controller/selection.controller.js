@@ -197,7 +197,7 @@
 
         
         var initModelItem = function(item, parent) {
-            initItem(item);
+            initItem(item, parent);
             angular.forEach(item.children, function(children) {
                 initModelItem(children, item);
             });
