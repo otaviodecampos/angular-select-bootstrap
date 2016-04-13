@@ -64,12 +64,21 @@
 
         this.contains = function(item) {
             var contains = false;
-            angular.forEach(this.selectedItems, function(selectedItem) {
-                if(selectedItem[that.options.idProperty] == item[that.options.idProperty]) {
-                    contains = true;
-                    return false;
+            
+            for(var i = 0; i < this.selectedItems.length; i++) {
+                var selectedItem = this.selectedItems[i];
+                
+                if(angular.isObject(selectedItem)) {
+                    contains = selectedItem[that.options.idProperty] == item[that.options.idProperty];
+                } else {
+                    contains = selectedItem == item;
                 }
-            });
+                
+                if(contains) {
+                    break;
+                }
+            }
+
             return contains;
         }
 
