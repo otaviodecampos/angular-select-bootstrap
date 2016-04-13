@@ -12,13 +12,17 @@
 
         var addSelectedItem = function(item) {
             if(that.selectedItems.indexOf(item) == -1) {
+                item.$$selected = true;
                 that.selectedItems.push(item);
             }
         }
 
         var removeSelectedItem = function(item) {
             var index = that.selectedItems.indexOf(item);
-            that.selectedItems.splice(index, 1);
+            if(index != -1) {
+                that.selectedItems.splice(index, 1);
+                item.$$selected = false;   
+            }
         }
 
         var selectAllChildren = function(item) {
@@ -137,13 +141,13 @@
                 this.close();
             }
         }
-
+        
         this.openItem = function(item, openParent) {
-            if(item) {
+            if(item && item.children != undefined) {
                 item.$$openned = !item.$$openned;
                 if(openParent) {
                     this.openItem(item.$$parent, true);
-                }
+                } 
             }
         }
         
@@ -163,7 +167,11 @@
         var initItem = function(item, parent) {
 
             item.$$parent = parent;
-
+            
+            if(angular.isObject(item)) {
+                item.$$isObject = true;
+            }
+            
             var model = that.getModel()
                 , selected = false;
 
@@ -209,9 +217,9 @@
             });
         }
         
-        var init = $scope.$watch('dropdownSelectionCtrl.items', function(newValue) {
-            if(newValue) {
-                initItems(newValue);
+        var init = $scope.$watch('dropdownSelectionCtrl.items', function(items) {
+            if(items) {
+                initItems(items);
                 init();
             }
         });
