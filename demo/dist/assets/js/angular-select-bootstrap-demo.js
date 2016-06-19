@@ -516,7 +516,7 @@
         }
         
         this.onClose = function() {
-            console.log(9);
+            console.log('on close fn');
         }
         
     }
