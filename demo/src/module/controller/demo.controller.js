@@ -23,6 +23,10 @@
             this.value9 = null;
         }
         
+        this.onClose = function() {
+            console.log(9);
+        }
+        
     }
 
 })();

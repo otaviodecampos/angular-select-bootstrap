@@ -18,8 +18,8 @@
     function Controller($scope, $document, $element) {
 
         var that = this;
-        this.oppened = false;
-        this.selectedItems = [];
+        that.oppened = false;
+        that.selectedItems = [];
 
         var addSelectedItem = function(item) {
             if(that.selectedItems.indexOf(item) == -1) {
@@ -104,6 +104,10 @@
             if(this.oppened) {
                 this.oppened = false
                 $document.unbind('click', onClick);
+                var closeFn = that.onClose();
+                if(closeFn) {
+                    closeFn();
+                }
             }
         }
 
@@ -283,7 +287,8 @@
             controller: "DropdownSelectionCtrl as dropdownSelectionCtrl",
             replace: true,
             scope: {
-                items: "="
+                items: "=",
+                onClose: "&"
             },
             bindToController: true,
             link: function(scope, element, attrs, ngModel) {

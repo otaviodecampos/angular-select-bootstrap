@@ -11,7 +11,8 @@
             controller: "DropdownSelectionCtrl as dropdownSelectionCtrl",
             replace: true,
             scope: {
-                items: "="
+                items: "=",
+                onClose: "&"
             },
             bindToController: true,
             link: function(scope, element, attrs, ngModel) {
