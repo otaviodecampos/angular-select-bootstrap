@@ -27,6 +27,10 @@
             console.log('on close fn');
         }
         
+        this.onOpen = function() {
+            console.log('on open fn');
+        }
+        
     }
 
 })();

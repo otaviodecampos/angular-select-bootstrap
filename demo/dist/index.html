@@ -22,7 +22,7 @@
                           <div class="form-group">
                               <label class="col-md-4 control-label">Field</label>
                               <div class="col-md-3">
-                                  <dropdown-selection on-close="ctrl.onClose" ng-model="ctrl.value" items="ctrl.items"></dropdown-selection>
+                                  <dropdown-selection on-open="ctrl.onOpen" on-close="ctrl.onClose" ng-model="ctrl.value" items="ctrl.items"></dropdown-selection>
                               </div>
                           </div>
                       </form>

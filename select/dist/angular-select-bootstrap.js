@@ -97,6 +97,11 @@
                 }
                 
                 $document.bind('click', onClick);
+                
+                var openFn = that.onOpen();
+                if(openFn) {
+                    openFn();
+                }
             } else {
                 var closeFn = that.onClose();
                 if(closeFn) {
@@ -293,7 +298,8 @@
             replace: true,
             scope: {
                 items: "=",
-                onClose: "&"
+                onClose: "&",
+                onOpen: "&"
             },
             bindToController: true,
             link: function(scope, element, attrs, ngModel) {

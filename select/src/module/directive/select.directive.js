@@ -12,7 +12,8 @@
             replace: true,
             scope: {
                 items: "=",
-                onClose: "&"
+                onClose: "&",
+                onOpen: "&"
             },
             bindToController: true,
             link: function(scope, element, attrs, ngModel) {
