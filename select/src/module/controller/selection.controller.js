@@ -86,6 +86,11 @@
                 }
                 
                 $document.bind('click', onClick);
+            } else {
+                var closeFn = that.onClose();
+                if(closeFn) {
+                    closeFn();
+                }
             }
         }
 
