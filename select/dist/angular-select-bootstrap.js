@@ -62,6 +62,16 @@
             });
         }
 
+        this.equalItems = function(item1, item2) {
+            var fn = that.equalsFunction();
+            if(fn) {
+                return fn(item1, item2);
+            } else {
+                return item1[that.options.idProperty] == item2[that.options.idProperty];
+            }
+
+        }
+
         this.contains = function(item) {
             var contains = false;
             
@@ -69,7 +79,7 @@
                 var selectedItem = this.selectedItems[i];
                 
                 if(angular.isObject(selectedItem)) {
-                    contains = selectedItem[that.options.idProperty] == item[that.options.idProperty];
+                    contains = that.equalItems(item, selectedItem);
                 } else {
                     contains = selectedItem == item;
                 }
@@ -162,6 +172,9 @@
                     }
                 }
             } else {
+                if(that.options.selectToggle && angular.equals(model, item)) {
+                    item = null;
+                }
                 this.unselectAllItems();
                 if(item) {
                     addSelectedItem(item);
@@ -201,7 +214,7 @@
         var initItem = function(item, parent) {
 
             item.$$parent = parent;
-            
+
             if(angular.isObject(item)) {
                 item.$$isObject = true;
             }
@@ -211,7 +224,7 @@
 
             if(that.options.multiple && model) {
                 angular.forEach(model, function(modelItem) {
-                    if(modelItem[that.options.idProperty] == item[that.options.idProperty]) {
+                    if(that.equalItems(modelItem, item)) {
                         selected = true;
                         return false;
                     }
@@ -238,16 +251,19 @@
         });
 
         
-        var initModelItem = function(item, parent) {
+        var initModelItem = function(item, parent, open) {
             initItem(item, parent);
             angular.forEach(item.children, function(children) {
                 initModelItem(children, item);
+                if(open) {
+                    item.$$openned = true;
+                }
             });
         }
         
         var initItems = function(items) {
             angular.forEach(items, function(item) {
-                initModelItem(item);
+                initModelItem(item, null, that.options.preOpenFirstChild);
             });
         }
         
@@ -299,7 +315,8 @@
             scope: {
                 items: "=",
                 onClose: "&",
-                onOpen: "&"
+                onOpen: "&",
+                equalsFunction: "&"
             },
             bindToController: true,
             link: function(scope, element, attrs, ngModel) {
@@ -317,7 +334,9 @@
                     multiple: true,
                     editable: false,
                     placeholder: 'Empty title',
-                    selectClose: false
+                    selectClose: false,
+                    selectToggle: false,
+                    preOpenFirstChild: false
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);
@@ -355,5 +374,5 @@
     }
 
 })();
-angular.module("angular-select-bootstrap").run(["$templateCache", function($templateCache) {$templateCache.put("angular-select-bootstrap/dropdownMenu.tpl.html","<ul class=\"dropdown-menu\">\n    <li ng-repeat=\"item in items\" ng-class=\"{group: item.children.length, open: item.$$openned}\">\n        <a href=\"javascript:angular.noop()\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()\">\n            <span class=\"group icon\" ng-click=\"dropdownSelectionCtrl.openItem(item); $event.stopPropagation()\"></span>\n            <input type=\"checkbox\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()\" ng-if=\"dropdownSelectionCtrl.options.multiple\" ng-checked=\"dropdownSelectionCtrl.contains(item)\">\n            <span class=\"glyphicon glyphicon-ok check-mark\" ng-if=\"!dropdownSelectionCtrl.options.multiple && dropdownSelectionCtrl.contains(item)\"></span>\n            <span class=\"title\" ng-bind=\"(item.$$isObject ? item.title : item) || dropdownSelectionCtrl.options.placeholder | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\n        </a>\n        <dropdown-menu ng-if=\"item.$$openned\" class=\"group\" parent=\"item\" items=\"item.children\"></dropdown-menu>\n    </li>\n</ul>");
-$templateCache.put("angular-select-bootstrap/dropdownSelection.tpl.html","<div class=\"dropdown selection\" ng-class=\"{open: dropdownSelectionCtrl.oppened}\" click-outside=\"dropdownSelectionCtrl.close()\" click-outside-active=\"dropdownSelectionCtrl.oppened\" ng-switch=\"dropdownSelectionCtrl.mode\">\n    <button ng-switch-when=\"multiple\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow\">\n        \n        <span class=\"label label-default\" ng-switch-when=\"true\">\n            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectAllItems()\"></i>\n        </span>\n        \n        <span class=\"label label-default\" ng-repeat=\"item in dropdownSelectionCtrl.selectedItems\" ng-switch-when=\"false\">\n            <span ng-bind=\"::( item.$$isObject && item.title || item ) | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectItem(item)\"></i>\n        </span>\n        \n        <span class=\"caret\"></span>\n    </button>\n    \n    <label ng-switch-when=\"unique\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\">\n        <span class=\"title\" ng-bind=\"( dropdownSelectionCtrl.selectedItems[0].$$isObject && dropdownSelectionCtrl.selectedItems[0].title || dropdownSelectionCtrl.selectedItems[0] ) | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\n        <span class=\"caret\"></span>\n    </label>\n    \n    <label ng-switch-when=\"unique-editable\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\">\n        <input class=\"edit\" ng-if=\"dropdownSelectionCtrl.selectedItems[0]\" placeholder=\"{{ dropdownSelectionCtrl.options.placeholder }}\" ng-click=\"$event.stopPropagation()\" ng-model=\"dropdownSelectionCtrl.selectedItems[0].title\" type=\"text\"/>\n        <span class=\"caret\"></span>\n    </label>\n    \n    <dropdown-menu ng-if=\"dropdownSelectionCtrl.oppened\" items=\"dropdownSelectionCtrl.items\"></dropdown-menu>\n</div>");}]);
+angular.module("angular-select-bootstrap").run(["$templateCache", function($templateCache) {$templateCache.put("angular-select-bootstrap/dropdownMenu.tpl.html","<ul class=\"dropdown-menu\">\r\n    <li ng-repeat=\"item in items\" ng-class=\"{group: item.children.length, open: item.$$openned}\">\r\n        <a href=\"javascript:angular.noop()\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()\">\r\n            <span class=\"group icon\" ng-click=\"dropdownSelectionCtrl.openItem(item); $event.stopPropagation()\"></span>\r\n            <input type=\"checkbox\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()\" ng-if=\"dropdownSelectionCtrl.options.multiple\" ng-checked=\"dropdownSelectionCtrl.contains(item)\">\r\n            <span class=\"glyphicon glyphicon-ok check-mark\" ng-if=\"!dropdownSelectionCtrl.options.multiple && dropdownSelectionCtrl.contains(item)\"></span>\r\n            <span class=\"title\" ng-bind=\"(item.$$isObject ? item.title : item) || dropdownSelectionCtrl.options.placeholder | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\r\n        </a>\r\n        <dropdown-menu ng-if=\"item.$$openned\" class=\"group\" parent=\"item\" items=\"item.children\"></dropdown-menu>\r\n    </li>\r\n</ul>");
+$templateCache.put("angular-select-bootstrap/dropdownSelection.tpl.html","<div class=\"dropdown selection\" ng-class=\"{open: dropdownSelectionCtrl.oppened}\" click-outside=\"dropdownSelectionCtrl.close()\" click-outside-active=\"dropdownSelectionCtrl.oppened\" ng-switch=\"dropdownSelectionCtrl.mode\">\r\n    <button ng-switch-when=\"multiple\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow\">\r\n        \r\n        <span class=\"label label-default\" ng-switch-when=\"true\">\r\n            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}\r\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectAllItems()\"></i>\r\n        </span>\r\n        \r\n        <span class=\"label label-default\" ng-repeat=\"item in dropdownSelectionCtrl.selectedItems\" ng-switch-when=\"false\">\r\n            <span ng-bind=\"::( item.$$isObject && item.title || item ) | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\r\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectItem(item)\"></i>\r\n        </span>\r\n        \r\n        <span class=\"caret\"></span>\r\n    </button>\r\n    \r\n    <label ng-switch-when=\"unique\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\">\r\n        <span class=\"title\" ng-bind=\"( dropdownSelectionCtrl.selectedItems[0].$$isObject && dropdownSelectionCtrl.selectedItems[0].title || dropdownSelectionCtrl.selectedItems[0] ) || dropdownSelectionCtrl.options.title | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\r\n        <span class=\"caret\"></span>\r\n    </label>\r\n    \r\n    <label ng-switch-when=\"unique-editable\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\">\r\n        <input class=\"edit\" ng-if=\"dropdownSelectionCtrl.selectedItems[0]\" placeholder=\"{{ dropdownSelectionCtrl.options.placeholder }}\" ng-click=\"$event.stopPropagation()\" ng-model=\"dropdownSelectionCtrl.selectedItems[0].title\" type=\"text\"/>\r\n        <span class=\"caret\"></span>\r\n    </label>\r\n    \r\n    <dropdown-menu ng-if=\"dropdownSelectionCtrl.oppened\" items=\"dropdownSelectionCtrl.items\"></dropdown-menu>\r\n</div>");}]);

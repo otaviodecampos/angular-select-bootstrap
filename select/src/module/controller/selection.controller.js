@@ -51,6 +51,16 @@
             });
         }
 
+        this.equalItems = function(item1, item2) {
+            var fn = that.equalsFunction();
+            if(fn) {
+                return fn(item1, item2);
+            } else {
+                return item1[that.options.idProperty] == item2[that.options.idProperty];
+            }
+
+        }
+
         this.contains = function(item) {
             var contains = false;
             
@@ -58,7 +68,7 @@
                 var selectedItem = this.selectedItems[i];
                 
                 if(angular.isObject(selectedItem)) {
-                    contains = selectedItem[that.options.idProperty] == item[that.options.idProperty];
+                    contains = that.equalItems(item, selectedItem);
                 } else {
                     contains = selectedItem == item;
                 }
@@ -151,6 +161,9 @@
                     }
                 }
             } else {
+                if(that.options.selectToggle && angular.equals(model, item)) {
+                    item = null;
+                }
                 this.unselectAllItems();
                 if(item) {
                     addSelectedItem(item);
@@ -190,7 +203,7 @@
         var initItem = function(item, parent) {
 
             item.$$parent = parent;
-            
+
             if(angular.isObject(item)) {
                 item.$$isObject = true;
             }
@@ -200,7 +213,7 @@
 
             if(that.options.multiple && model) {
                 angular.forEach(model, function(modelItem) {
-                    if(modelItem[that.options.idProperty] == item[that.options.idProperty]) {
+                    if(that.equalItems(modelItem, item)) {
                         selected = true;
                         return false;
                     }
@@ -227,16 +240,19 @@
         });
 
         
-        var initModelItem = function(item, parent) {
+        var initModelItem = function(item, parent, open) {
             initItem(item, parent);
             angular.forEach(item.children, function(children) {
                 initModelItem(children, item);
+                if(open) {
+                    item.$$openned = true;
+                }
             });
         }
         
         var initItems = function(items) {
             angular.forEach(items, function(item) {
-                initModelItem(item);
+                initModelItem(item, null, that.options.preOpenFirstChild);
             });
         }
         

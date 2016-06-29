@@ -522,6 +522,10 @@
         this.onOpen = function() {
             console.log('on open fn');
         }
+
+        this.equalsFunction = function(item1, item2) {
+            return item1.order == item2.order;
+        }
         
     }
 

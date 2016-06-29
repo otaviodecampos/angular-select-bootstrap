@@ -13,7 +13,8 @@
             scope: {
                 items: "=",
                 onClose: "&",
-                onOpen: "&"
+                onOpen: "&",
+                equalsFunction: "&"
             },
             bindToController: true,
             link: function(scope, element, attrs, ngModel) {
@@ -31,7 +32,9 @@
                     multiple: true,
                     editable: false,
                     placeholder: 'Empty title',
-                    selectClose: false
+                    selectClose: false,
+                    selectToggle: false,
+                    preOpenFirstChild: false
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);

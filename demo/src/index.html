@@ -14,6 +14,82 @@
     
     <div class="container">
         <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Multiple choice with first child open</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Field</label>
+                                <div class="col-md-3">
+                                    <dropdown-selection ng-model="ctrl.value5" items="ctrl.items2" options="{preOpenFirstChild: true, maxTerm: 'Selecionados...', maxShow: 2, 'idProperty': 'easyId'}"></dropdown-selection>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <div class="well">model: {{ ctrl.value5 | json }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Fixed label on single choice</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Field</label>
+                                <div class="col-md-3">
+                                    <dropdown-selection ng-model="ctrl.value3" items="ctrl.items" options="{multiple: false, selectToggle: true, title: 'Selecione um valor'}"></dropdown-selection>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <div class="well">model: {{ ctrl.value3 | json }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Select/Unselect on single choice</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Field</label>
+                                <div class="col-md-3">
+                                    <dropdown-selection ng-model="ctrl.value3" items="ctrl.items" options="{multiple: false, selectToggle: true}"></dropdown-selection>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <div class="well">model: {{ ctrl.value3 | json }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Default multiple selection with equals function</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Field</label>
+                                <div class="col-md-3">
+                                    <dropdown-selection equals-function="ctrl.equalsFunction" on-open="ctrl.onOpen" on-close="ctrl.onClose" ng-model="ctrl.value" items="ctrl.items"></dropdown-selection>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <div class="well">model: {{ ctrl.value | json }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
           <div class="col-md-12">
               <div class="panel panel-default">
                   <div class="panel-heading">Default multiple selection</div>
