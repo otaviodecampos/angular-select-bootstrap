@@ -23,7 +23,7 @@
   margin-top: -5px;
   margin-bottom: -5px;
 }
-.dropdown.selection .dropdown-toggle > span.title {
+.dropdown.selection .dropdown-toggle > span.dropdown-title {
   width: 100%;
   display: block;
   overflow: hidden;
@@ -122,7 +122,7 @@
   background: none;
   outline: none;
 }
-.dropdown.selection .group.dropdown-menu {
+.dropdown.selection .dropdown-group.dropdown-menu {
   position: relative;
   border: 0;
   box-shadow: none;
@@ -130,17 +130,17 @@
   display: none;
   padding-bottom: 0;
 }
-.dropdown.selection .group.open > .group.dropdown-menu {
+.dropdown.selection .dropdown-group.open > .dropdown-group.dropdown-menu {
   display: block;
 }
-.dropdown.selection .group {
+.dropdown.selection .dropdown-group {
   position: relative;
 }
-.dropdown.selection span.group.icon {
+.dropdown.selection span.dropdown-group.icon {
   position: absolute;
   display: block;
 }
-.dropdown.selection .group > a > .group.icon:before {
+.dropdown.selection .dropdown-group > a > .dropdown-group.icon:before {
   font-family: 'Glyphicons Halflings';
   content: "\e250";
   position: relative;
@@ -148,7 +148,7 @@
   margin-left: -12px;
   display: inline-block;
 }
-.dropdown.selection .group.open > a > .group.icon:before {
+.dropdown.selection .dropdown-group.open > a > .dropdown-group.icon:before {
   content: "\e252";
 }
 .dropdown.selection > .dropdown-menu {
@@ -165,7 +165,7 @@
   padding-top: 8px;
   padding-bottom: 8px;
 }
-.dropdown.selection .dropdown-menu > li > a .title {
+.dropdown.selection .dropdown-menu > li > a .dropdown-title {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 15px;
