@@ -11,7 +11,8 @@
             replace: true,
             scope: {
                 parent: "=",
-                items: "="
+                items: "=",
+                search: "@"
             },
             link: function(scope, element, attr, dropdownSelection) {
                 scope.dropdownSelectionCtrl = dropdownSelection;

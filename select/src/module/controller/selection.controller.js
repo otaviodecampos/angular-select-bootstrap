@@ -21,7 +21,7 @@
             var index = that.selectedItems.indexOf(item);
             if(index != -1) {
                 that.selectedItems.splice(index, 1);
-                item.$$selected = false;   
+                item.$$selected = false;
             }
         }
 
@@ -51,6 +51,63 @@
             });
         }
 
+        var toShow = function(term, item, recursive) {
+            var show = false;
+
+            if(recursive == undefined) {
+                recursive = true;
+            }
+
+            try {
+                if(item.title && item.title.replace(/[^\w\s+]/gi, '').toLowerCase().indexOf(term.toLowerCase().replace(/[^\w\s+]/gi, '')) != -1) {
+                    show = true;
+                }
+            } catch (e) {
+                console.log('angular-select-bootstrap: Invalid search term');
+            }
+
+            if(item.children) {
+                for(var i = 0; i < item.children.length; i++) {
+                    var child = item.children[i];
+                    var showChild = toShow(term, child, false);
+
+                    if(!showChild) {
+                        item.$$openned = false;
+                    }
+
+                    if(!show && showChild) {
+                        show = true;
+                    }
+                    if(show) {
+                        break;
+                    }
+                }
+            }
+
+            if(!show && item.$$parent && item.$$parent.$$opennedByClick) {
+                show = true;
+            }
+
+            if(show && item.$$parent) {
+                item.$$parent.$$openned = true;
+            }
+
+            return show;
+        }
+
+        that.searchFilter = function(item, index, itens) {
+            var search = that.searchTerm && that.searchTerm.title || false;
+            var show = true;
+
+            if(search) {
+                show = toShow(search, item);
+            } else {
+                item.$$openned = item.$$lastOpennedState;
+            }
+
+            return show;
+        }
+
         this.equalItems = function(item1, item2) {
             var fn = that.equalsFunction();
             if(fn) {
@@ -63,16 +120,16 @@
 
         this.contains = function(item) {
             var contains = false;
-            
+
             for(var i = 0; i < this.selectedItems.length; i++) {
                 var selectedItem = this.selectedItems[i];
-                
+
                 if(angular.isObject(selectedItem)) {
                     contains = that.equalItems(item, selectedItem);
                 } else {
                     contains = selectedItem == item;
                 }
-                
+
                 if(contains) {
                     break;
                 }
@@ -94,9 +151,9 @@
                         $scope.$apply();
                     }
                 }
-                
+
                 $document.bind('click', onClick);
-                
+
                 var openFn = that.onOpen();
                 if(openFn) {
                     openFn();
@@ -111,7 +168,7 @@
 
         this.close = function() {
             if(this.oppened) {
-                this.oppened = false
+                this.oppened = false;
                 $document.unbind('click', onClick);
                 var closeFn = that.onClose();
                 if(closeFn) {
@@ -124,13 +181,13 @@
             var model = this.ngModel.$modelValue;
             if(model == undefined) {
                 if(this.options.multiple) {
-                    model = [];   
+                    model = [];
                     this.ngModel.$setViewValue(model, true);
                 }
             }
             return model;
         }
-        
+
         this.setModelValue = function(value) {
             var model = this.getModel();
             this.ngModel.$setViewValue(value, true);
@@ -146,18 +203,18 @@
             if(this.options.multiple) {
                 var index = model.indexOf(item);
                 var exist = index != -1;
-    
+
                 if(!exist) {
                     model.push(item);
                     if(cascade) {
-                        selectAllChildren(item);   
+                        selectAllChildren(item);
                     }
                     addSelectedItem(item);
                 } else if(exist) {
                     model.splice(index, 1);
                     removeSelectedItem(item);
                     if(cascade) {
-                        unselectAllChildren(item);   
+                        unselectAllChildren(item);
                     }
                 }
             } else {
@@ -172,21 +229,30 @@
                     this.setModelValue(null);
                 }
             }
-            
+
             if(this.options.selectClose) {
                 this.close();
             }
         }
-        
+
         this.openItem = function(item, openParent) {
             if(item && item.children != undefined) {
                 item.$$openned = !item.$$openned;
+
+                item.$$lastOpennedState = item.$$openned;
+
+                if(item.$$openned) {
+                    item.$$opennedByClick = true;
+                } else {
+                    delete item.$$opennedByClick;
+                }
+
                 if(openParent) {
                     this.openItem(item.$$parent, true);
-                } 
+                }
             }
         }
-        
+
         this.unselectItem = function(item) {
             this.selectItem(this.options.multiple && item || null, false);
         }
@@ -194,9 +260,9 @@
         this.unselectAllItems = function() {
             if(this.options.multiple) {
                 var model = this.getModel();
-                model.length = 0;    
+                model.length = 0;
             }
-            
+
             this.selectedItems.length = 0;
         }
 
@@ -207,7 +273,7 @@
             if(angular.isObject(item)) {
                 item.$$isObject = true;
             }
-            
+
             var model = that.getModel()
                 , selected = false;
 
@@ -239,23 +305,24 @@
             }
         });
 
-        
+
         var initModelItem = function(item, parent, open) {
             initItem(item, parent);
             angular.forEach(item.children, function(children) {
                 initModelItem(children, item);
                 if(open) {
                     item.$$openned = true;
+                    item.$$lastOpennedState = true;
                 }
             });
         }
-        
+
         var initItems = function(items) {
             angular.forEach(items, function(item) {
                 initModelItem(item, null, that.options.preOpenFirstChild);
             });
         }
-        
+
         var init = $scope.$watch('dropdownSelectionCtrl.items', function(items) {
             if(items) {
                 initItems(items);

@@ -34,7 +34,8 @@
                     placeholder: 'Empty title',
                     selectClose: false,
                     selectToggle: false,
-                    preOpenFirstChild: false
+                    preOpenFirstChild: false,
+                    searchPlaceholder: 'Filtrar'
                 }
 
                 ctrl.options = angular.extend(defaultOptions, options);
