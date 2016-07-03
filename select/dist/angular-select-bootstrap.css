@@ -200,6 +200,7 @@
   background: #fff;
   border-left: 1px solid #96c8da;
   border-right: 1px solid #96c8da;
+  margin-bottom: -81px;
 }
 .dropdown.selection .dropdown-control > div {
   padding: 4px 10px;
@@ -216,7 +217,4 @@
 }
 .dropdown.selection .dropdown-buttons .label {
   cursor: pointer;
-}
-.dropdown.selection {
-  margin-bottom: -100px;
 }
