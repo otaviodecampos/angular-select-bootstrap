@@ -26,7 +26,7 @@
 
     <div class="dropdown-control" ng-if="dropdownSelectionCtrl.oppened && (dropdownSelectionCtrl.options.search || dropdownSelectionCtrl.options.buttons)">
         <div class="dropdown-search" ng-if="::dropdownSelectionCtrl.options.search">
-            <input type="text" class="form-control" placeholder="{{ dropdownSelectionCtrl.options.searchPlaceholder }}" ng-model="dropdownSelectionCtrl.searchTerm.title" ng-model-options="{debounce: 300}" autocomplete="off">
+            <input type="text" class="form-control" placeholder="{{ dropdownSelectionCtrl.options.searchPlaceholder }}" ng-model="dropdownSelectionCtrl.searchTerm.title" ng-model-options="{debounce: dropdownSelectionCtrl.options.searchDebounce}" autocomplete="off">
         </div>
 
         <div class="dropdown-buttons" ng-if="::dropdownSelectionCtrl.options.buttons">
