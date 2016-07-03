@@ -201,6 +201,8 @@
   border-left: 1px solid #96c8da;
   border-right: 1px solid #96c8da;
   margin-bottom: -81px;
+  position: relative;
+  z-index: 1;
 }
 .dropdown.selection .dropdown-control > div {
   padding: 4px 10px;
