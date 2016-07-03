@@ -197,11 +197,17 @@
   margin-top: 10px;
 }
 
-.dropdown.selection .dropdown-searchbox {
+.dropdown.selection .dropdown-control {
+  background: #fff;
+  border-left: 1px solid #96c8da;
+  border-right: 1px solid #96c8da;
+}
+
+.dropdown.selection .dropdown-control > div {
   padding: 4px 10px;
 }
 
-.dropdown-highlighted {
+.dropdown.selection .dropdown-highlighted {
   background: yellow;
   border-radius: 3px;
   padding-left: 3px;
@@ -209,16 +215,14 @@
   display: inline-block;
 }
 
-.dropdown-buttonbox {
+.dropdown.selection .dropdown-buttons {
   text-align: right;
-  padding: 4px 10px;
 }
 
-.dropdown-buttonbox label {
+.dropdown.selection .dropdown-buttons .label {
   cursor: pointer;
 }
 
-/*
-.dropdown-buttonbox i {
-  margin-right: 5px;
-}*/
+.dropdown.selection {
+  margin-bottom: -100px;
+}

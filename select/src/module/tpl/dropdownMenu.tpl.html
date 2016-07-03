@@ -1,18 +1,4 @@
 <ul class="dropdown-menu">
-    <li class="dropdown-searchbox" ng-if="::search">
-        <input type="text" class="form-control" placeholder="{{ dropdownSelectionCtrl.options.searchPlaceholder }}" ng-model="dropdownSelectionCtrl.searchTerm.title" ng-model-options="{debounce: 300}" autocomplete="off">
-    </li>
-
-    <li class="dropdown-searchbox dropdown-buttonbox" ng-if="::buttons">
-        <span class="label label-default" ng-click="dropdownSelectionCtrl.openAll(dropdownSelectionCtrl.items)">
-            <i class="fa fa-plus"></i>
-        </span>
-
-        <span class="label label-default" ng-click="dropdownSelectionCtrl.closeAll(dropdownSelectionCtrl.items)">
-            <i class="fa fa-minus"></i>
-        </span>
-    </li>
-
     <li ng-repeat="item in items | filter:dropdownSelectionCtrl.searchFilter" ng-class="{'dropdown-group': item.children.length, open: item.$$openned}">
         <a href="javascript:angular.noop()" ng-click="dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()">
             <span class="dropdown-group icon" ng-click="dropdownSelectionCtrl.openItem(item); $event.stopPropagation()"></span>

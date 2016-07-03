@@ -13,7 +13,7 @@
                 var item = scope.dropdownIndeterminate;
                 item.$$checkbox = element;
 
-                scope.$watch('dropdownIndeterminate.$$selected', function(selected) {
+                scope.$watch('dropdownIndeterminate.$$selected', function() {
                     indeterminate(item.$$parent);
                 });
 
@@ -22,7 +22,7 @@
                         var selectedChilds = 0;
                         for(var i = 0; i < item.children.length; i++) {
                             var child =  item.children[i];
-                            if(child.$$selected || (child.$$checkbox && (child.$$checkbox.prop('indeterminate') || child.$$checkbox.prop('checked')))) {
+                            if(child.$$selected || (child.$$checkbox && (child.$$checkbox.prop('checked')))) {
                                 selectedChilds++;
                             }
                         }
@@ -41,35 +41,6 @@
                         indeterminate(item.$$parent);
                     }
                 }
-
-                /*scope.$watch(childList, function(newValue) {
-                    var hasChecked = false;
-                    var hasUnchecked = false;
-
-                    // Loop through the children
-                    angular.forEach(newValue, function(child) {
-                        if (child[property]) {
-                            hasChecked = true;
-                        } else {
-                            hasUnchecked = true;
-                        }
-                    });
-
-                    // Determine which state to put the checkbox in
-                    if (hasChecked && hasUnchecked) {
-                        element.prop('checked', false);
-                        element.prop('indeterminate', true);
-                        if (modelCtrl) {
-                            modelCtrl.$setViewValue(false);
-                        }
-                    } else {
-                        element.prop('checked', hasChecked);
-                        element.prop('indeterminate', false);
-                        if (modelCtrl) {
-                            modelCtrl.$setViewValue(hasChecked);
-                        }
-                    }
-                }, true);*/
             }
         };
     }

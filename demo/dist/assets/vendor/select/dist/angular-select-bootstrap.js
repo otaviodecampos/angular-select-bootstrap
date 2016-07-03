@@ -381,7 +381,7 @@
                 var item = scope.dropdownIndeterminate;
                 item.$$checkbox = element;
 
-                scope.$watch('dropdownIndeterminate.$$selected', function(selected) {
+                scope.$watch('dropdownIndeterminate.$$selected', function() {
                     indeterminate(item.$$parent);
                 });
 
@@ -390,7 +390,7 @@
                         var selectedChilds = 0;
                         for(var i = 0; i < item.children.length; i++) {
                             var child =  item.children[i];
-                            if(child.$$selected || (child.$$checkbox && (child.$$checkbox.prop('indeterminate') || child.$$checkbox.prop('checked')))) {
+                            if(child.$$selected || (child.$$checkbox && (child.$$checkbox.prop('checked')))) {
                                 selectedChilds++;
                             }
                         }
@@ -409,35 +409,6 @@
                         indeterminate(item.$$parent);
                     }
                 }
-
-                /*scope.$watch(childList, function(newValue) {
-                    var hasChecked = false;
-                    var hasUnchecked = false;
-
-                    // Loop through the children
-                    angular.forEach(newValue, function(child) {
-                        if (child[property]) {
-                            hasChecked = true;
-                        } else {
-                            hasUnchecked = true;
-                        }
-                    });
-
-                    // Determine which state to put the checkbox in
-                    if (hasChecked && hasUnchecked) {
-                        element.prop('checked', false);
-                        element.prop('indeterminate', true);
-                        if (modelCtrl) {
-                            modelCtrl.$setViewValue(false);
-                        }
-                    } else {
-                        element.prop('checked', hasChecked);
-                        element.prop('indeterminate', false);
-                        if (modelCtrl) {
-                            modelCtrl.$setViewValue(hasChecked);
-                        }
-                    }
-                }, true);*/
             }
         };
     }
@@ -456,9 +427,7 @@
             replace: true,
             scope: {
                 parent: "=",
-                items: "=",
-                search: "@",
-                buttons: "@"
+                items: "="
             },
             link: function(scope, element, attr, dropdownSelection) {
                 scope.dropdownSelectionCtrl = dropdownSelection;
@@ -566,5 +535,5 @@
     }
 
 })();
-angular.module("angular-select-bootstrap").run(["$templateCache", function($templateCache) {$templateCache.put("angular-select-bootstrap/dropdownMenu.tpl.html","<ul class=\"dropdown-menu\">\r\n    <li class=\"dropdown-searchbox\" ng-if=\"::search\">\r\n        <input type=\"text\" class=\"form-control\" placeholder=\"{{ dropdownSelectionCtrl.options.searchPlaceholder }}\" ng-model=\"dropdownSelectionCtrl.searchTerm.title\" ng-model-options=\"{debounce: 300}\" autocomplete=\"off\">\r\n    </li>\r\n\r\n    <li class=\"dropdown-searchbox dropdown-buttonbox\" ng-if=\"::buttons\">\r\n        <span class=\"label label-default\" ng-click=\"dropdownSelectionCtrl.openAll(dropdownSelectionCtrl.items)\">\r\n            <i class=\"fa fa-plus\"></i>\r\n        </span>\r\n\r\n        <span class=\"label label-default\" ng-click=\"dropdownSelectionCtrl.closeAll(dropdownSelectionCtrl.items)\">\r\n            <i class=\"fa fa-minus\"></i>\r\n        </span>\r\n    </li>\r\n\r\n    <li ng-repeat=\"item in items | filter:dropdownSelectionCtrl.searchFilter\" ng-class=\"{\'dropdown-group\': item.children.length, open: item.$$openned}\">\r\n        <a href=\"javascript:angular.noop()\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()\">\r\n            <span class=\"dropdown-group icon\" ng-click=\"dropdownSelectionCtrl.openItem(item); $event.stopPropagation()\"></span>\r\n            <input type=\"checkbox\" dropdown-indeterminate=\"item\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()\" ng-if=\"dropdownSelectionCtrl.options.multiple\" ng-checked=\"item.$$selected\">\r\n            <span class=\"glyphicon glyphicon-ok check-mark\" ng-if=\"!dropdownSelectionCtrl.options.multiple && item.$$selected\"></span>\r\n            <span class=\"dropdown-title\" ng-bind-html=\"(item.$$isObject ? item.title : item) || dropdownSelectionCtrl.options.placeholder | dropdownHighlight:dropdownSelectionCtrl.searchTerm.title\"></span><!--{{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}-->\r\n        </a>\r\n        <dropdown-menu ng-if=\"item.$$openned\" class=\"dropdown-group\" parent=\"item\" items=\"item.children\"></dropdown-menu>\r\n    </li>\r\n</ul>");
-$templateCache.put("angular-select-bootstrap/dropdownSelection.tpl.html","<div class=\"dropdown selection\" ng-class=\"{open: dropdownSelectionCtrl.oppened}\" click-outside=\"dropdownSelectionCtrl.close()\" click-outside-active=\"dropdownSelectionCtrl.oppened\" ng-switch=\"dropdownSelectionCtrl.mode\">\r\n    <button ng-switch-when=\"multiple\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow\">\r\n        \r\n        <span class=\"label label-default\" ng-switch-when=\"true\">\r\n            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}\r\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectAllItems()\"></i>\r\n        </span>\r\n        \r\n        <span class=\"label label-default\" ng-repeat=\"item in dropdownSelectionCtrl.selectedItems\" ng-switch-when=\"false\">\r\n            <span ng-bind=\"::( item.$$isObject && item.title || item ) | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\r\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectItem(item)\"></i>\r\n        </span>\r\n        \r\n        <span class=\"caret\"></span>\r\n    </button>\r\n    \r\n    <label ng-switch-when=\"unique\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\">\r\n        <span class=\"dropdown-title\" ng-bind=\"( dropdownSelectionCtrl.selectedItems[0].$$isObject && dropdownSelectionCtrl.selectedItems[0].title || dropdownSelectionCtrl.selectedItems[0] ) || dropdownSelectionCtrl.options.title | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\r\n        <span class=\"caret\"></span>\r\n    </label>\r\n    \r\n    <label ng-switch-when=\"unique-editable\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\">\r\n        <input class=\"edit\" ng-if=\"dropdownSelectionCtrl.selectedItems[0]\" placeholder=\"{{ dropdownSelectionCtrl.options.placeholder }}\" ng-click=\"$event.stopPropagation()\" ng-model=\"dropdownSelectionCtrl.selectedItems[0].title\" type=\"text\"/>\r\n        <span class=\"caret\"></span>\r\n    </label>\r\n    <dropdown-menu ng-if=\"dropdownSelectionCtrl.oppened\" items=\"dropdownSelectionCtrl.items\" buttons=\"{{ ::dropdownSelectionCtrl.options.buttons }}\" search=\"{{ ::dropdownSelectionCtrl.options.search }}\"></dropdown-menu>\r\n</div>");}]);
+angular.module("angular-select-bootstrap").run(["$templateCache", function($templateCache) {$templateCache.put("angular-select-bootstrap/dropdownMenu.tpl.html","<ul class=\"dropdown-menu\">\r\n    <li ng-repeat=\"item in items | filter:dropdownSelectionCtrl.searchFilter\" ng-class=\"{\'dropdown-group\': item.children.length, open: item.$$openned}\">\r\n        <a href=\"javascript:angular.noop()\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()\">\r\n            <span class=\"dropdown-group icon\" ng-click=\"dropdownSelectionCtrl.openItem(item); $event.stopPropagation()\"></span>\r\n            <input type=\"checkbox\" dropdown-indeterminate=\"item\" ng-click=\"dropdownSelectionCtrl.selectItem(item); $event.stopPropagation()\" ng-if=\"dropdownSelectionCtrl.options.multiple\" ng-checked=\"item.$$selected\">\r\n            <span class=\"glyphicon glyphicon-ok check-mark\" ng-if=\"!dropdownSelectionCtrl.options.multiple && item.$$selected\"></span>\r\n            <span class=\"dropdown-title\" ng-bind-html=\"(item.$$isObject ? item.title : item) || dropdownSelectionCtrl.options.placeholder | dropdownHighlight:dropdownSelectionCtrl.searchTerm.title\"></span><!--{{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}-->\r\n        </a>\r\n        <dropdown-menu ng-if=\"item.$$openned\" class=\"dropdown-group\" parent=\"item\" items=\"item.children\"></dropdown-menu>\r\n    </li>\r\n</ul>");
+$templateCache.put("angular-select-bootstrap/dropdownSelection.tpl.html","<div class=\"dropdown selection\" ng-class=\"{open: dropdownSelectionCtrl.oppened}\" click-outside=\"dropdownSelectionCtrl.close()\" click-outside-active=\"dropdownSelectionCtrl.oppened\" ng-switch=\"dropdownSelectionCtrl.mode\">\r\n    <button ng-switch-when=\"multiple\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\" ng-switch=\"dropdownSelectionCtrl.selectedItems.length > dropdownSelectionCtrl.options.maxShow\">\r\n        \r\n        <span class=\"label label-default\" ng-switch-when=\"true\">\r\n            {{ dropdownSelectionCtrl.selectedItems.length }} {{ ::dropdownSelectionCtrl.options.maxTerm }}\r\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectAllItems()\"></i>\r\n        </span>\r\n        \r\n        <span class=\"label label-default\" ng-repeat=\"item in dropdownSelectionCtrl.selectedItems\" ng-switch-when=\"false\">\r\n            <span ng-bind=\"::( item.$$isObject && item.title || item ) | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\r\n            <i class=\"remove glyphicon glyphicon-remove\" ng-click=\"dropdownSelectionCtrl.unselectItem(item)\"></i>\r\n        </span>\r\n        \r\n        <span class=\"caret\"></span>\r\n    </button>\r\n    \r\n    <label ng-switch-when=\"unique\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\">\r\n        <span class=\"dropdown-title\" ng-bind=\"( dropdownSelectionCtrl.selectedItems[0].$$isObject && dropdownSelectionCtrl.selectedItems[0].title || dropdownSelectionCtrl.selectedItems[0] ) || dropdownSelectionCtrl.options.title | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : \'noop\' }}\"></span>\r\n        <span class=\"caret\"></span>\r\n    </label>\r\n    \r\n    <label ng-switch-when=\"unique-editable\" class=\"btn btn-default dropdown-toggle\" type=\"button\" ng-click=\"dropdownSelectionCtrl.toggle()\">\r\n        <input class=\"edit\" ng-if=\"dropdownSelectionCtrl.selectedItems[0]\" placeholder=\"{{ dropdownSelectionCtrl.options.placeholder }}\" ng-click=\"$event.stopPropagation()\" ng-model=\"dropdownSelectionCtrl.selectedItems[0].title\" type=\"text\"/>\r\n        <span class=\"caret\"></span>\r\n    </label>\r\n\r\n    <div class=\"dropdown-control\" ng-if=\"dropdownSelectionCtrl.oppened\">\r\n        <div class=\"dropdown-search\" ng-if=\"::dropdownSelectionCtrl.options.search\">\r\n            <input type=\"text\" class=\"form-control\" placeholder=\"{{ dropdownSelectionCtrl.options.searchPlaceholder }}\" ng-model=\"dropdownSelectionCtrl.searchTerm.title\" ng-model-options=\"{debounce: 300}\" autocomplete=\"off\">\r\n        </div>\r\n\r\n        <div class=\"dropdown-buttons\" ng-if=\"::dropdownSelectionCtrl.options.buttons\">\r\n            <span class=\"label label-default\" ng-click=\"dropdownSelectionCtrl.openAll(dropdownSelectionCtrl.items)\">\r\n                <i class=\"fa fa-plus\"></i>\r\n            </span>\r\n\r\n            <span class=\"label label-default\" ng-click=\"dropdownSelectionCtrl.closeAll(dropdownSelectionCtrl.items)\">\r\n                <i class=\"fa fa-minus\"></i>\r\n            </span>\r\n        </div>\r\n    </div>\r\n\r\n    <dropdown-menu ng-if=\"dropdownSelectionCtrl.oppened\" items=\"dropdownSelectionCtrl.items\"></dropdown-menu>\r\n</div>");}]);

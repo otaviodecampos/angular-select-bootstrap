@@ -23,5 +23,22 @@
         <input class="edit" ng-if="dropdownSelectionCtrl.selectedItems[0]" placeholder="{{ dropdownSelectionCtrl.options.placeholder }}" ng-click="$event.stopPropagation()" ng-model="dropdownSelectionCtrl.selectedItems[0].title" type="text"/>
         <span class="caret"></span>
     </label>
-    <dropdown-menu ng-if="dropdownSelectionCtrl.oppened" items="dropdownSelectionCtrl.items" buttons="{{ ::dropdownSelectionCtrl.options.buttons }}" search="{{ ::dropdownSelectionCtrl.options.search }}"></dropdown-menu>
+
+    <div class="dropdown-control" ng-if="dropdownSelectionCtrl.oppened">
+        <div class="dropdown-search" ng-if="::dropdownSelectionCtrl.options.search">
+            <input type="text" class="form-control" placeholder="{{ dropdownSelectionCtrl.options.searchPlaceholder }}" ng-model="dropdownSelectionCtrl.searchTerm.title" ng-model-options="{debounce: 300}" autocomplete="off">
+        </div>
+
+        <div class="dropdown-buttons" ng-if="::dropdownSelectionCtrl.options.buttons">
+            <span class="label label-default" ng-click="dropdownSelectionCtrl.openAll(dropdownSelectionCtrl.items)">
+                <i class="fa fa-plus"></i>
+            </span>
+
+            <span class="label label-default" ng-click="dropdownSelectionCtrl.closeAll(dropdownSelectionCtrl.items)">
+                <i class="fa fa-minus"></i>
+            </span>
+        </div>
+    </div>
+
+    <dropdown-menu ng-if="dropdownSelectionCtrl.oppened" items="dropdownSelectionCtrl.items"></dropdown-menu>
 </div>
