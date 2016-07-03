@@ -12,7 +12,8 @@
             scope: {
                 parent: "=",
                 items: "=",
-                search: "@"
+                search: "@",
+                buttons: "@"
             },
             link: function(scope, element, attr, dropdownSelection) {
                 scope.dropdownSelectionCtrl = dropdownSelection;

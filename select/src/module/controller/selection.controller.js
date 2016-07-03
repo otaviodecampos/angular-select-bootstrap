@@ -11,43 +11,56 @@
         that.selectedItems = [];
 
         var addSelectedItem = function(item) {
-            if(that.selectedItems.indexOf(item) == -1) {
-                item.$$selected = true;
-                that.selectedItems.push(item);
+            item.$$selected = true;
+            if(that.options.multiple) {
+                if(item.children == false) {
+                    if(that.selectedItems.indexOf(item) == -1) {
+                        var model = that.getModel();
+                        that.selectedItems.push(item);
+                        model.push(item);
+                    }
+                }
+            } else {
+                if(that.selectedItems.indexOf(item) == -1) {
+                    that.selectedItems.push(item);
+                }
+                that.setModelValue(item);
             }
         }
 
         var removeSelectedItem = function(item) {
-            var index = that.selectedItems.indexOf(item);
-            if(index != -1) {
-                that.selectedItems.splice(index, 1);
+            if(item) {
                 item.$$selected = false;
+                if(that.options.multiple) {
+                    if(item.children == false) {
+                        var index = that.selectedItems.indexOf(item);
+                        if (index != -1) {
+                            var model = that.getModel();
+                            model.splice(index, 1);
+                            that.selectedItems.splice(index, 1);
+                        }
+                    }
+                } else {
+                    var index = that.selectedItems.indexOf(item);
+                    if(index != -1) {
+                        that.selectedItems.splice(index, 1);
+                    }
+                    that.setModelValue(null);
+                }
             }
         }
 
         var selectAllChildren = function(item) {
-            var model = that.getModel();
             angular.forEach(item.children, function(item) {
-                var index = model.indexOf(item);
-                var exist = index != -1;
-                if(!exist) {
-                    model.push(item);
-                    addSelectedItem(item);
-                    selectAllChildren(item);
-                }
+                addSelectedItem(item);
+                selectAllChildren(item);
             });
         }
 
         var unselectAllChildren = function(item) {
-            var model = that.getModel();
             angular.forEach(item.children, function(item) {
-                var index = model.indexOf(item);
-                var exist = index != -1;
-                if(exist) {
-                    model.splice(index, 1);
-                    removeSelectedItem(item);
-                    unselectAllChildren(item);
-                }
+                removeSelectedItem(item);
+                unselectAllChildren(item);
             });
         }
 
@@ -58,12 +71,8 @@
                 recursive = true;
             }
 
-            try {
-                if(item.title && item.title.replace(/[^\w\s+]/gi, '').toLowerCase().indexOf(term.toLowerCase().replace(/[^\w\s+]/gi, '')) != -1) {
-                    show = true;
-                }
-            } catch (e) {
-                console.log('angular-select-bootstrap: Invalid search term');
+            if(item.title && item.title.replace(/[^\w\s+]/gi, '').toLowerCase().indexOf(term.toLowerCase().replace(/[^\w\s+]/gi, '')) != -1) {
+                show = true;
             }
 
             if(item.children) {
@@ -82,10 +91,6 @@
                         break;
                     }
                 }
-            }
-
-            if(!show && item.$$parent && item.$$parent.$$opennedByClick) {
-                show = true;
             }
 
             if(show && item.$$parent) {
@@ -193,6 +198,28 @@
             this.ngModel.$setViewValue(value, true);
         }
 
+        this.openAll = function(items) {
+            for(var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if(item.children) {
+                    item.$$lastOpennedState = true;
+                    item.$$openned = true;
+                    this.openAll(item.children);
+                }
+            }
+        }
+
+        this.closeAll = function(items) {
+            for(var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if(item.children) {
+                    item.$$lastOpennedState = false;
+                    item.$$openned = false;
+                    this.closeAll(item.children);
+                }
+            }
+        }
+
         this.selectItem = function(item, cascade) {
             var model = this.getModel();
 
@@ -200,34 +227,27 @@
                 cascade = true;
             }
 
-            if(this.options.multiple) {
-                var index = model.indexOf(item);
-                var exist = index != -1;
-
-                if(!exist) {
-                    model.push(item);
+            if(this.options.multiple && item.$$checkbox) {
+                if(item.$$checkbox.prop('checked')) {
                     if(cascade) {
                         selectAllChildren(item);
                     }
                     addSelectedItem(item);
-                } else if(exist) {
-                    model.splice(index, 1);
+                } else {
                     removeSelectedItem(item);
                     if(cascade) {
                         unselectAllChildren(item);
                     }
                 }
             } else {
-                if(that.options.selectToggle && angular.equals(model, item)) {
-                    item = null;
-                }
                 this.unselectAllItems();
-                if(item) {
-                    addSelectedItem(item);
-                    this.setModelValue(item);
+
+                if(angular.equals(model, item)) {
+                    removeSelectedItem(item);
                 } else {
-                    this.setModelValue(null);
+                    addSelectedItem(item);
                 }
+
             }
 
             if(this.options.selectClose) {
@@ -235,14 +255,14 @@
             }
         }
 
-        this.openItem = function(item, openParent) {
+        this.openItem = function(item, openParent, forceState, byClick) {
             if(item && item.children != undefined) {
-                item.$$openned = !item.$$openned;
+                item.$$openned = forceState != undefined ? forceState : !item.$$openned;
 
                 item.$$lastOpennedState = item.$$openned;
 
                 if(item.$$openned) {
-                    item.$$opennedByClick = true;
+                    item.$$opennedByClick = byClick != undefined ? byClick : true;
                 } else {
                     delete item.$$opennedByClick;
                 }
@@ -263,11 +283,14 @@
                 model.length = 0;
             }
 
+            for(var i = 0; i < this.selectedItems.length; i++) {
+                var selectedItem = this.selectedItems[0];
+                selectedItem.$$selected = false;
+            }
             this.selectedItems.length = 0;
         }
 
         var initItem = function(item, parent) {
-
             item.$$parent = parent;
 
             if(angular.isObject(item)) {
@@ -287,7 +310,7 @@
             }
 
             if(model == item || selected) {
-                that.openItem(parent, true);
+                that.openItem(parent, true, true, false);
                 if(!that.options.multiple) {
                     that.unselectAllItems();
                 }
@@ -311,8 +334,7 @@
             angular.forEach(item.children, function(children) {
                 initModelItem(children, item);
                 if(open) {
-                    item.$$openned = true;
-                    item.$$lastOpennedState = true;
+                    that.openItem(item, false, true);
                 }
             });
         }

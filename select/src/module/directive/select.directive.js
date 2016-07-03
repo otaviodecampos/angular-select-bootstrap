@@ -33,7 +33,6 @@
                     editable: false,
                     placeholder: 'Empty title',
                     selectClose: false,
-                    selectToggle: false,
                     preOpenFirstChild: false,
                     searchPlaceholder: 'Filtrar'
                 }

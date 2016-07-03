@@ -22,12 +22,12 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Field</label>
                                 <div class="col-md-3">
-                                    <dropdown-selection ng-model="ctrl.value5" items="ctrl.items2" options="{search: true, preOpenFirstChild: true, maxTerm: 'Selecionados...', maxShow: 2, 'idProperty': 'easyId'}"></dropdown-selection>
+                                    <dropdown-selection ng-model="ctrl.value2" items="ctrl.items2" options="{buttons: true, search: true, preOpenFirstChild: true, maxTerm: 'Selecionados...', maxShow: 2, 'idProperty': 'easyId'}"></dropdown-selection>
                                 </div>
                             </div>
                         </form>
                         <br>
-                        <div class="well">model: {{ ctrl.value5 | json }}</div>
+                        <div class="well">model: {{ ctrl.value2 | json }}</div>
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Field</label>
                                 <div class="col-md-3">
-                                    <dropdown-selection ng-model="ctrl.value3" items="ctrl.items" options="{multiple: false, selectToggle: true}"></dropdown-selection>
+                                    <dropdown-selection ng-model="ctrl.value3" items="ctrl.items" options="{multiple: false}"></dropdown-selection>
                                 </div>
                             </div>
                         </form>

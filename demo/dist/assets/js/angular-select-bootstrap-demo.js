@@ -501,7 +501,7 @@
         this.items2 = EASY_ITEMS;
 
         this.value = [ITEMS[0]];
-        this.value2 = [EASY_ITEMS[0]];
+        this.value2 = [EASY_ITEMS[0].children[0].children[0], EASY_ITEMS[0].children[0].children[1]];
         
         this.addNewItemAndSelect = function() {
             var newItem = {id: 99, title: 'New Item'};
