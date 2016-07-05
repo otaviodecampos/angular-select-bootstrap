@@ -10,7 +10,8 @@
             <span ng-bind="::( item.$$isObject && item.title || item ) | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : 'noop' }}"></span>
             <i class="remove glyphicon glyphicon-remove" ng-click="dropdownSelectionCtrl.unselectItem(item)"></i>
         </span>
-        
+
+        <span class="dropdown-title" ng-if="dropdownSelectionCtrl.selectedItems.length == 0" dropdown-display-filter ng-bind="dropdownSelectionCtrl.options.title"></span>
         <span class="caret"></span>
     </button>
     
