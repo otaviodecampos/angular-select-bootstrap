@@ -17,7 +17,7 @@
                     if(that.selectedItems.indexOf(item) == -1) {
                         var model = that.getModel();
                         that.selectedItems.push(item);
-                        if(model.indexOf(item) == -1) {
+                        if(indexOfComparator(model, item) == -1) {
                             model.push(item);
                         }
                     }
@@ -30,6 +30,20 @@
             }
         }
 
+        var indexOfComparator = function(array, obj) {
+            var index = -1;
+            if(array) {
+                for(var i = 0; i < array.length; i ++) {
+                    var arrayObj = array[i];
+                    if(that.equalItems(arrayObj, obj)) {
+                        index = i;
+                        break;
+                    };
+                }
+            }
+            return index;
+        }
+
         var removeSelectedItem = function(item) {
             if(item) {
                 item.$$selected = false;
@@ -38,7 +52,7 @@
                         var index = that.selectedItems.indexOf(item);
                         if (index != -1) {
                             var model = that.getModel();
-                            var modelIndex = model.indexOf(item);
+                            var modelIndex = indexOfComparator(model, item);
                             if(modelIndex != -1) {
                                 model.splice(modelIndex, 1);
                             }
