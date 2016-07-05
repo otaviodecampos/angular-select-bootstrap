@@ -11,7 +11,6 @@
             controller: "DropdownSelectionCtrl as dropdownSelectionCtrl",
             replace: true,
             scope: {
-                items: "=",
                 onClose: "&",
                 onOpen: "&",
                 equalsFunction: "&"
@@ -21,6 +20,10 @@
                 var ctrl = scope.dropdownSelectionCtrl
                     , ngModelAttr = element.attr('ng-model')
                     , options = $parse(attrs.options)(scope);
+
+                scope.$parent.$watchCollection(attrs.items, function(items) {
+                    ctrl.initItems(JSON.parse(angular.toJson(items)));
+                });
 
                 ctrl.ngModel = ngModel;
                 ctrl.ngModelGetter = $parse(ngModelAttr);

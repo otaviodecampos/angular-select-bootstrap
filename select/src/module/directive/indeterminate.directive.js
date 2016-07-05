@@ -19,23 +19,30 @@
 
                 function indeterminate(item) {
                     if(item) {
-                        var selectedChilds = 0;
+                        var hasChecked = false;
+                        var hasUnchecked = false;
+                        var hasIndeterminate = false;
+
                         for(var i = 0; i < item.children.length; i++) {
                             var child =  item.children[i];
-                            if(child.$$selected || (child.$$checkbox && (child.$$checkbox.prop('checked')))) {
-                                selectedChilds++;
+                            if(child.$$selected) {
+                                hasChecked = true;
+                            } else {
+                                hasUnchecked = true;
                             }
+
+                            if(child.$$checkbox && child.$$checkbox.prop('indeterminate')) {
+                                hasIndeterminate = true;
+                            }
+
                         }
 
-                        if(selectedChilds == 0) {
-                            item.$$checkbox.prop('indeterminate', false);
-                            item.$$selected = false;
-                        } else if (selectedChilds != item.children.length){
+                        if((hasChecked && hasUnchecked) || (!hasChecked && hasIndeterminate)) {
                             item.$$checkbox.prop('indeterminate', true);
                             item.$$selected = false;
                         } else {
                             item.$$checkbox.prop('indeterminate', false);
-                            item.$$selected = selectedChilds == item.children.length;
+                            item.$$selected = hasChecked;
                         }
 
                         indeterminate(item.$$parent);

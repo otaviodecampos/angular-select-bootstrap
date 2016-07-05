@@ -58,10 +58,20 @@
         }
 
         var unselectAllChildren = function(item) {
-            angular.forEach(item.children, function(item) {
-                removeSelectedItem(item);
-                unselectAllChildren(item);
-            });
+            if(item) {
+                angular.forEach(item.children, function(item) {
+                    removeSelectedItem(item);
+                    unselectAllChildren(item);
+                });
+            }
+        }
+
+        var unselectAllParent = function(item) {
+            if(item) {
+                removeSelectedItem(item.$$parent);
+                unselectAllChildren(item.$$parent);
+                unselectAllParent(item.$$parent);
+            }
         }
 
         var toShow = function(term, item, recursive) {
@@ -240,11 +250,12 @@
                     }
                 }
             } else {
-                this.unselectAllItems();
-
                 if(angular.equals(model, item)) {
-                    removeSelectedItem(item);
+                    if(that.options.selectToggle) {
+                        removeSelectedItem(item);
+                    }
                 } else {
+                    this.unselectAllItems();
                     addSelectedItem(item);
                 }
 
@@ -274,7 +285,7 @@
         }
 
         this.unselectItem = function(item) {
-            this.selectItem(this.options.multiple && item || null, false);
+            removeSelectedItem(item);
         }
 
         this.unselectAllItems = function() {
@@ -284,8 +295,9 @@
             }
 
             for(var i = 0; i < this.selectedItems.length; i++) {
-                var selectedItem = this.selectedItems[0];
-                selectedItem.$$selected = false;
+                var selectedItem = this.selectedItems[i];
+                removeSelectedItem(selectedItem);
+                unselectAllParent(selectedItem);
             }
             this.selectedItems.length = 0;
         }
@@ -304,7 +316,6 @@
                 angular.forEach(model, function(modelItem) {
                     if(that.equalItems(modelItem, item)) {
                         selected = true;
-                        return false;
                     }
                 });
             }
@@ -339,18 +350,12 @@
             });
         }
 
-        var initItems = function(items) {
+        that.initItems = function(items) {
+            that.items = items;
             angular.forEach(items, function(item) {
                 initModelItem(item, null, that.options.preOpenFirstChild);
             });
         }
-
-        var init = $scope.$watch('dropdownSelectionCtrl.items', function(items) {
-            if(items) {
-                initItems(items);
-                init();
-            }
-        });
 
     }
 

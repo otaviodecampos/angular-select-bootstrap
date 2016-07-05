@@ -502,7 +502,9 @@
 
         this.value = [ITEMS[0]];
         this.value2 = [EASY_ITEMS[0].children[0].children[0], EASY_ITEMS[0].children[0].children[1]];
-        
+
+        this.value30 = ITEMS[1];
+
         this.addNewItemAndSelect = function() {
             var newItem = {id: 99, title: 'New Item'};
             this.items.push(newItem);
@@ -510,9 +512,9 @@
         }
         
         this.removeSelected = function() {
-            var index = this.items.indexOf(this.value9);
+            var index = this.items.indexOf(this.value38);
             this.items.splice(index, 1);
-            this.value9 = null;
+            this.value38 = null;
         }
         
         this.onClose = function() {

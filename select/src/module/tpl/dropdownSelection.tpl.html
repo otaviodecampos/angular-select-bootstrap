@@ -15,7 +15,7 @@
     </button>
     
     <label ng-switch-when="unique" class="btn btn-default dropdown-toggle" type="button" ng-click="dropdownSelectionCtrl.toggle()">
-        <span class="dropdown-title" ng-bind="( dropdownSelectionCtrl.selectedItems[0].$$isObject && dropdownSelectionCtrl.selectedItems[0].title || dropdownSelectionCtrl.selectedItems[0] ) || dropdownSelectionCtrl.options.title | {{ dropdownSelectionCtrl.options.filter ? dropdownSelectionCtrl.options.filter : 'noop' }}"></span>
+        <span class="dropdown-title" dropdown-display-filter ng-bind="( dropdownSelectionCtrl.selectedItems[0].$$isObject && dropdownSelectionCtrl.selectedItems[0].title || dropdownSelectionCtrl.selectedItems[0] ) || dropdownSelectionCtrl.options.title"></span>
         <span class="caret"></span>
     </label>
     
