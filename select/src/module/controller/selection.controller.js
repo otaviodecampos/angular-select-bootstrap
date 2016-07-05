@@ -17,7 +17,9 @@
                     if(that.selectedItems.indexOf(item) == -1) {
                         var model = that.getModel();
                         that.selectedItems.push(item);
-                        model.push(item);
+                        if(model.indexOf(item) == -1) {
+                            model.push(item);
+                        }
                     }
                 }
             } else {
@@ -36,7 +38,10 @@
                         var index = that.selectedItems.indexOf(item);
                         if (index != -1) {
                             var model = that.getModel();
-                            model.splice(index, 1);
+                            var modelIndex = model.indexOf(item);
+                            if(modelIndex != -1) {
+                                model.splice(modelIndex, 1);
+                            }
                             that.selectedItems.splice(index, 1);
                         }
                     }
